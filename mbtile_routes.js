@@ -29,7 +29,8 @@ module.exports = function(app) {
     else readTile(kode, z, x, y)
       .then(blob => {
         if (blob) {
-          res.setHeader("Content-Type", "gzip")
+          res.setHeader("Content-Encoding", "gzip")
+          res.setHeader("Content-Type", "application/x-protobuf")
           res.end(new Buffer(blob, "binary"));
         }
         else res.status(404)

@@ -18,7 +18,10 @@ module.exports = function(app) {
 
     if(kode && !z) { readMetadata(kode)
       .then(metadata => {
-      if (metadata) res.end(createMetadata(metadata));
+      if (metadata) {
+        res.setHeader("Content-Type", "application/json")
+        res.end(createMetadata(metadata));
+      }
       else res.sendFile(__dirname + "/png-transparent.png");
     })
     .catch(next);
@@ -26,7 +29,10 @@ module.exports = function(app) {
 
     else readTile(kode, z, y, x)
       .then(blob => {
-        if (blob) res.end(new Buffer(blob, "binary"));
+        if (blob) {
+          res.setHeader("Content-Type", "gzip")
+          res.end(new Buffer(blob, "binary"));
+        }
         else res.sendFile(__dirname + "/png-transparent.png");
       })
       .catch(next);

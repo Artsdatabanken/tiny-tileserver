@@ -10,7 +10,7 @@ function createMetadata(metadataIn){
     metadataOut = {
         minzoom: stringToInt(metadataTemp.minzoom),
         maxzoom: stringToInt(metadataTemp.maxzoom),
-        bounds: [ stringToFloat(bounds[0]), stringToFloat(bounds[1]),stringToFloat(bounds[1]),stringToFloat(bounds[2])],
+        bounds: [ stringToFloat(bounds[0]), stringToFloat(bounds[1]),stringToFloat(bounds[2]),stringToFloat(bounds[3])],
         center: [ stringToFloat(center[0]), stringToFloat(center[1])]
     }
     return JSON.stringify(metadataOut)

@@ -12,8 +12,8 @@ module.exports = function(app) {
   });
   app.get("*", (req, res, next) => {
     const parts = req.url.split("/");
-    const [empty, kode, z, y, x] = parts;
-    log.info({ kode, z, y, x });
+    const [empty, kode, z, x, y] = parts;
+    log.info({ kode, z, x, y });
 
     if(kode && !z) { readMetadata(kode)
       .then(metadata => {
@@ -26,13 +26,15 @@ module.exports = function(app) {
     .catch(next);
     }
 
-    else readTile(kode, z, y, x)
+    else readTile(kode, z, x, y)
       .then(blob => {
         if (blob) {
           res.setHeader("Content-Type", "gzip")
           res.end(new Buffer(blob, "binary"));
         }
-        else res.sendFile(__dirname + "/png-transparent.png");
+        else res.status(404)
+          .send('Not found');
+        // res.sendFile(__dirname + "/png-transparent.png");
       })
       .catch(next);
   });

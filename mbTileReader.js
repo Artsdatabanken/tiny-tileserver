@@ -5,7 +5,8 @@ function readTile(file, zoom, column, row) {
     const sql =
       "SELECT tile_data from tiles WHERE zoom_level=? AND tile_column=? AND tile_row=?";
     let db = createDb(file);
-    db.get(sql, [zoom, column, row], (err, record) => {
+    let dbRow=Math.pow(2,zoom)-1-row
+    db.get(sql, [zoom, column, dbRow], (err, record) => {
       if (err) return reject(err);
       resolve(record ? record.tile_data : null);
       db.close();

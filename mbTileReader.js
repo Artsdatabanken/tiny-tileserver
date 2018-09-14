@@ -27,7 +27,7 @@ function readMetadata(file){
 }
 
 function createDb(file){
-  return new sqlite3.Database("./" + file + ".mbtiles");
+  return new sqlite3.Database("/data/" + file + ".mbtiles");
 }
 
 

@@ -8,7 +8,7 @@ jobs:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker build -t tinytileserver .
         - docker images
-        - docker tag tinytileserver $DOCKER_USERNAME/tinytileserver
-        - docker push $DOCKER_USERNAME/tinytileserver
+        - docker tag tinytileserver artsdatabanken/tinytileserver
+        - docker push artsdatabanken/tinytileserver
     - stage: test
-      script: docker run --rm $DOCKER_USERNAME/tinytileserver node test.js
+      script: docker run --rm artsdatabanken/tinytileserver node test.js

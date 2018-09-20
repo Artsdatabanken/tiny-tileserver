@@ -1,0 +1,14 @@
+sudo: true
+dist: trusty
+
+jobs:
+  include:
+    - stage: build docker image
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t tinytileserver .
+        - docker images
+        - docker tag tinytileserver $DOCKER_USERNAME/tinytileserver
+        - docker push $DOCKER_USERNAME/tinytileserver
+    - stage: test
+      script: docker run --rm $DOCKER_USERNAME/tinytileserver node test.js

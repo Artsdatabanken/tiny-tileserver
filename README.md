@@ -11,5 +11,5 @@ Docker container location: https://hub.docker.com/r/artsdatabanken/tiny-tileserv
 Navigate to folder containing mbtiles and run
 
 ```
-docker run -v ${pwd}:/data -p 8000:8000 artsdatabanken/tinytileserver
+docker run -v ${pwd}:/data -p 8000:8000 artsdatabanken/tiny-tileserver
 ```

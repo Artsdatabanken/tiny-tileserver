@@ -1,10 +1,30 @@
 {
   "scripts": {
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "express": "^4.16.3",
     "log-less-fancy": "^1.3.3",
     "sqlite3": "^4.0.2"
-  }
+  },
+  "name": "tiny-tileserver",
+  "description": "Docker container location: https://hub.docker.com/r/artsdatabanken/tiny-tileserver/",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Artsdatabanken/tiny-tileserver.git"
+  },
+  "keywords": [
+    "mbtiles",
+    "raster-tiles",
+    "vector-tiles"
+  ],
+  "author": "Bjorn Reppen <bjreppen@gmail.com> (https://github.com/bjornreppen)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Artsdatabanken/tiny-tileserver/issues"
+  },
+  "homepage": "https://github.com/Artsdatabanken/tiny-tileserver#readme"
 }

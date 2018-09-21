@@ -1,3 +1,12 @@
+const express = require("express");
 const mbTileReader = require("./mbTileReader");
+const log = require("log-less-fancy")();
 
-mbTileReader.readTile("AO_18", 3,4,5).then(tile => console.log(tile)+ " bytes..");
+const app = express();
+const port = 8000;
+
+require("./mbtile_routes")(app);
+
+app.listen(port, () => {
+  log.info("Server listening on port " + port);
+});

@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node tiny-tileserver.js --port 8282 data/"
+    "start": "node tiny-tileserver.js --port 8000 data/"
   },
   "dependencies": {
     "express": "^4.16.3",

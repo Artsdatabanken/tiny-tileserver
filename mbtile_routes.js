@@ -18,11 +18,6 @@ module.exports = function(app, rootDirectory, index) {
 	app.get("/", (req, res, next) => {
 		res.json({ version: pjson.version, tilesets: index });
 	});
-	app.get("/:file", (req, res, next) => {
-		readMetadata(path.join(rootDirectory, req.params.file + ".mbtiles"))
-			.then(metadata => res.json(createMetadata(metadata)))
-			.catch(next);
-	});
 	app.get("/:file/:z/:y/:x", (req, res, next) => {
 		const { z, x, y } = req.params;
 		const file = path.join(rootDirectory, req.params.file + ".mbtiles");
@@ -40,7 +35,7 @@ module.exports = function(app, rootDirectory, index) {
 					if (format.gzip) res.setHeader("Content-Encoding", "gzip");
 					res.end(Buffer.from(blob, "binary"));
 				} else
-					res.sendFile(path.join(rootDirectory, "empty." + format.extension));
+					res.sendFile("data/empty." + format.extension, { root: __dirname });
 			})
 			.catch(e => {
 				log.error(e);

@@ -22,6 +22,7 @@ const app = express();
 const port = argv.port || 8000;
 const rootDirectory = path.resolve(argv._[0] || ".");
 app.use(express.static(rootDirectory, { maxAge: 86400000, immutable: true }));
+app.use(express.static("data", { maxAge: 86400000, immutable: true }));
 
 const index = index_mbtiles(rootDirectory);
 mbtile_routes(app, rootDirectory, index);

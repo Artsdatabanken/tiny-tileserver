@@ -17,7 +17,6 @@ function index(mbtilesPath) {
 					meta = { error: meta.error.message };
 				}
 				index[file] = meta;
-				index["_" + file] = meta;
 			});
 
 			return acc;

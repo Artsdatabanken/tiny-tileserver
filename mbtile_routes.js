@@ -3,6 +3,7 @@ const { readTile, readMetadata } = require("./mbtileReader")
 const { createMetadata } = require("./metadata")
 const log = require("log-less-fancy")()
 var pjson = require("./package.json")
+getFormatSettings = require("./formats")
 
 module.exports = function(app, rootDirectory, index) {
   app.use((req, res, next) => {
@@ -48,20 +49,4 @@ module.exports = function(app, rootDirectory, index) {
         res.end()
       })
   })
-}
-
-function getFormat(metadata) {
-  switch (metadata.format) {
-    case "pbf":
-      return {
-        contentType: "application/x-protobuf",
-        extension: "pbf",
-        gzip: true
-      }
-    case "png":
-      return { contentType: "image/png", extension: "png" }
-    default:
-      log.warn("Unknown mbtiles format: " + metadata[file])
-      return {}
-  }
 }

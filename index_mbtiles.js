@@ -1,3 +1,4 @@
+const log = require("log-less-fancy")();
 const { readMetadata } = require("./mbtileReader");
 const fs = require("fs");
 var path = require("path");
@@ -10,10 +11,13 @@ function index(mbtilesPath) {
 			return fs.statSync(file).isFile() && path.extname(file) === ".mbtiles";
 		})
 		.reduce((acc, file) => {
-			readMetadata(file).then(meta => (index[file] = meta));
+			readMetadata(file).then(meta => {
+				if (meta.error) log.warn(file + ": " + meta.error);
+				index[file] = meta;
+			});
+
 			return acc;
 		}, {});
-	console.log(JSON.stringify(index));
 	return index;
 }
 

@@ -8,7 +8,7 @@ function readTile(file, zoom, column, row) {
 		const sql =
       "SELECT tile_data from tiles WHERE zoom_level=? AND tile_column=? AND tile_row=?";
 		const db = new sqlite3.Database(file, sqlite3.OPEN_READONLY, err => {
-			if (err) reject(err);
+			if (err) return reject(err);
 			db.get(sql, [zoom, column, dbRow], (err, record) => {
 				db.close();
 				if (err) {
@@ -24,15 +24,12 @@ function readMetadata(file) {
 	log.info("Open " + file);
 	return new Promise((resolve, reject) => {
 		const sql = "SELECT name, value from metadata";
-		log.info("db");
-		const db = new sqlite3.Database(file, sqlite3.OPEN_READONLY, err => {
-			if (err) reject(err);
-			log.info("all");
+		const db = new sqlite3.Database(file, sqlite3.OPEN_READONLY, error => {
+			if (error) return resolve({ error });
 			db.all(sql, (err, records) => {
-				log.info("if err");
-				if (err) {
+				if (error || !records) {
 					log.error(file + ": " + err);
-					resolve({ err });
+					return resolve({ error });
 				}
 				db.close();
 				const meta = records.reduce((acc, row) => {

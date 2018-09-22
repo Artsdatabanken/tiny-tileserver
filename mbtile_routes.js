@@ -3,7 +3,7 @@ const { readTile, readMetadata } = require("./mbtileReader");
 const { createMetadata } = require("./metadata");
 const log = require("log-less-fancy")();
 const pjson = require("./package.json");
-const getFormat = require("./formats");
+const getFormat = require("./tileformat");
 
 module.exports = function(app, rootDirectory, index) {
 	app.use((req, res, next) => {

@@ -4,4 +4,4 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --no-cache --production
 COPY . .
-CMD [ "node", "tiny-tileserver.js", "--port 8000 /data/" ]
+CMD [ "node", "tiny-tileserver.js", "--port", "8000", "/data/" ]

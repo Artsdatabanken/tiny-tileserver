@@ -1,5 +1,6 @@
 const log = require("log-less-fancy")();
 const { readMetadata } = require("./mbtileReader");
+const { mapMetadata } = require("./metadata");
 const fs = require("fs");
 var path = require("path");
 
@@ -18,7 +19,8 @@ function index(mbtilesPath) {
 				}
 
 				const name = path.parse(file).name;
-				index[path.basename(name)] = meta;
+				delete meta.json;
+				index[path.basename(name)] = mapMetadata(meta);
 			});
 
 			return acc;

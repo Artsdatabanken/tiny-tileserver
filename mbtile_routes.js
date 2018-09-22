@@ -18,7 +18,14 @@ module.exports = function(app, rootDirectory, index) {
 	app.get("/", (req, res, next) => {
 		res.json({ version: pjson.version, tilesets: index });
 	});
-	app.get("/:file/:z/:y/:x", (req, res, next) => {
+	app.get("/bounds", (req, res) => {
+		res.json(
+			Object.entries(index).map(e => {
+				return Object.assign({ name: e[0] }, e[1]);
+			})
+		);
+	});
+	app.get("/:file/:z/:y/:x", (req, res) => {
 		const { file, z, x, y } = req.params;
 		const mbtilePath = path.join(rootDirectory, req.params.file + ".mbtiles");
 		const metadata = index[file];

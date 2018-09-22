@@ -13,7 +13,7 @@ yarn start
 
 Navigate to http://localhost:8000/ to display a summary of the tile sets.
 
-Tiles can be pulled using an url of this form: http://localhost:8000/{name}/{zoom}/{y}/{x}
+Tiles can be pulled using an url of this form: http://localhost:8000/{name}/{zoom}/{x}/{y}
 
 ## Images
 

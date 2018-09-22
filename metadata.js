@@ -1,12 +1,10 @@
-function createMetadata(metadataTemp) {
-	let bounds = metadataTemp.bounds.split(",").map(b => parseFloat(b));
-
+function mapMetadata(meta) {
 	return {
-		format: metadataTemp.format,
-		minzoom: parseInt(metadataTemp.minzoom),
-		maxzoom: parseInt(metadataTemp.maxzoom),
-		bounds: bounds
+		error: meta.error,
+		format: meta.format,
+		zoom: [parseInt(meta.minzoom), parseInt(meta.maxzoom)],
+		bounds: meta.bounds && meta.bounds.split(",").map(b => parseFloat(b))
 	};
 }
 
-module.exports = { createMetadata };
+module.exports = { mapMetadata };

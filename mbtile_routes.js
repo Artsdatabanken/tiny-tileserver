@@ -61,7 +61,7 @@ function getFormat(metadata) {
     case "png":
       return { contentType: "image/png", extension: "png" }
     default:
-      console.warn("Unknown extension " + metadata[file])
+      log.warn("Unknown mbtiles format: " + metadata[file])
       return {}
   }
 }

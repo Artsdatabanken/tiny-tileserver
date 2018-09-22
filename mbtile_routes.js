@@ -19,16 +19,16 @@ module.exports = function(app, rootDirectory, index) {
 		res.json({ version: pjson.version, tilesets: index });
 	});
 	app.get("/:file/:z/:y/:x", (req, res, next) => {
-		const { z, x, y } = req.params;
-		const file = path.join(rootDirectory, req.params.file + ".mbtiles");
+		const { file, z, x, y } = req.params;
+		const mbtilePath = path.join(rootDirectory, req.params.file + ".mbtiles");
 		const metadata = index[file];
 		if (!metadata) {
-			res.status(404).send("Can not find tile set " + file);
+			res.status(404).send("Can not find tile set " + mbtilePath);
 			res.end();
 			return;
 		}
 		const format = getFormat(metadata);
-		readTile(file, z, x, y)
+		readTile(mbtilePath, z, x, y)
 			.then(blob => {
 				res.setHeader("Content-Type", format.contentType);
 				if (blob) {

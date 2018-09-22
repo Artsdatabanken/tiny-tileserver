@@ -16,7 +16,9 @@ function index(mbtilesPath) {
 					log.warn(file + ": " + meta.error.message);
 					meta = { error: meta.error.message };
 				}
-				index[file] = meta;
+
+				const name = path.parse(file).name;
+				index[path.basename(name)] = meta;
 			});
 
 			return acc;

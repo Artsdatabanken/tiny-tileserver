@@ -24,12 +24,11 @@ module.exports = function(app, rootDirectory, index) {
 			.catch(next);
 	});
 	app.get("/:file/:z/:y/:x", (req, res, next) => {
-		const parts = req.url.split("/");
 		const { z, x, y } = req.params;
 		const file = path.join(rootDirectory, req.params.file + ".mbtiles");
 		const metadata = index[file];
 		if (!metadata) {
-			res.status(404);
+			res.status(404).send("Can not find tile set " + file);
 			res.end();
 			return;
 		}
@@ -45,7 +44,7 @@ module.exports = function(app, rootDirectory, index) {
 			})
 			.catch(e => {
 				log.error(e);
-				res.status(500);
+				res.status(500).send(e.message);
 				res.end();
 			});
 	});

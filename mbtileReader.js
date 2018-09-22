@@ -26,11 +26,9 @@ function readMetadata(file) {
 		const sql = "SELECT name, value from metadata";
 		const db = new sqlite3.Database(file, sqlite3.OPEN_READONLY, error => {
 			if (error) return resolve({ error });
-			db.all(sql, (err, records) => {
-				if (error || !records) {
-					log.error(file + ": " + err);
-					return resolve({ error });
-				}
+			db.all(sql, (error, records) => {
+				if (error || !records) return resolve({ error });
+
 				db.close();
 				const meta = records.reduce((acc, row) => {
 					acc[row.name] = row.value;

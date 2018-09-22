@@ -12,8 +12,12 @@ function index(mbtilesPath) {
 		})
 		.reduce((acc, file) => {
 			readMetadata(file).then(meta => {
-				if (meta.error) log.warn(file + ": " + meta.error);
+				if (meta.error) {
+					log.warn(file + ": " + meta.error.message);
+					meta = { error: meta.error.message };
+				}
 				index[file] = meta;
+				index["_" + file] = meta;
 			});
 
 			return acc;

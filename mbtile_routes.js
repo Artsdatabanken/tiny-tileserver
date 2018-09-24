@@ -38,8 +38,8 @@ module.exports = function(app, rootDirectory, index) {
 		readTile(mbtilePath, z, x, y)
 			.then(blob => {
 				res.setHeader("Content-Type", format.contentType);
+				res.setHeader("Content-Encoding", "gzip");
 				if (blob) {
-					if (format.gzip) res.setHeader("Content-Encoding", "gzip");
 					res.end(Buffer.from(blob, "binary"));
 				} else
 					res.sendFile("data/empty." + format.extension, { root: __dirname });

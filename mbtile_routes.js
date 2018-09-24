@@ -25,7 +25,7 @@ module.exports = function(app, rootDirectory, index) {
 			})
 		);
 	});
-	app.get("/:file/:z/:y/:x", (req, res) => {
+	app.get("/:file/:z/:x/:y", (req, res) => {
 		const { file, z, x, y } = req.params;
 		const mbtilePath = path.join(rootDirectory, req.params.file + ".mbtiles");
 		const metadata = index[file];

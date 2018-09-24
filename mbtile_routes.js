@@ -4,6 +4,7 @@ const { createMetadata } = require("./metadata");
 const log = require("log-less-fancy")();
 const pjson = require("./package.json");
 const getFormat = require("./tileformat");
+const { addUrl } = require("./addUrl");
 
 module.exports = function(app, rootDirectory, index) {
 	app.use((req, res, next) => {
@@ -16,7 +17,7 @@ module.exports = function(app, rootDirectory, index) {
 		next();
 	});
 	app.get("/", (req, res, next) => {
-		res.json({ version: pjson.version, tilesets: index });
+		res.json({ version: pjson.version, tilesets: addUrl(index, req) });
 	});
 	app.get("/bounds", (req, res) => {
 		res.json(

@@ -1,7 +1,7 @@
 {
   "name": "tiny-tileserver",
-  "description": "Docker container location: https://hub.docker.com/r/artsdatabanken/tiny-tileserver/",
-  "version": "1.0.8",
+  "description": "Tiny raster and vector tile server.",
+  "version": "1.0.9",
   "main": "index.js",
   "devDependencies": {
     "eslint": "^5.6.0"

@@ -19,12 +19,8 @@ module.exports = function(app, rootDirectory, index) {
 	app.get("/all", (req, res, next) => {
 		res.json({ version: pjson.version, tilesets: addUrl(index, req) });
 	});
-	app.get("/bounds", (req, res) => {
-		res.json(
-			Object.entries(index).map(e => {
-				return Object.assign({ name: e[0] }, e[1]);
-			})
-		);
+	app.get("/MBTiles_metadata.json", (req, res) => {
+		res.json(index.jsonSummary());
 	});
 	app.get("*/:z/:x/:y", (req, res, next) => {
 		const { z, x, y } = req.params;

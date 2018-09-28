@@ -109,7 +109,7 @@ class Index {
 				.join("\n");
 			return template.replace("$rows", htmlFragment);
 		}
-		return `<a href="${node.file.name}">${node.file.name}</a>`;
+		return `<pre>${JSON.stringify(node.mbtiles, null, 2)}</pre>`;
 	}
 }
 

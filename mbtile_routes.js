@@ -1,6 +1,5 @@
 const path = require("path");
-const { readTile, readMetadata } = require("./mbtileReader");
-const { createMetadata } = require("./metadata");
+const { readTile } = require("./mbtileReader");
 const log = require("log-less-fancy")();
 const pjson = require("./package.json");
 const getFormat = require("./tileformat");
@@ -16,7 +15,8 @@ module.exports = function(app, rootDirectory, index) {
 		res.setHeader("Cache-Control", "public, immutable, max-age=31557600"); // 1 year
 		next();
 	});
-	app.get("/", (req, res, next) => {
+
+	app.get("/all", (req, res, next) => {
 		res.json({ version: pjson.version, tilesets: addUrl(index, req) });
 	});
 	app.get("/bounds", (req, res) => {
@@ -26,20 +26,17 @@ module.exports = function(app, rootDirectory, index) {
 			})
 		);
 	});
-	app.get("/:file/:z/:x/:y", (req, res) => {
-		const { file, z, x, y } = req.params;
-		const mbtilePath = path.join(rootDirectory, req.params.file + ".mbtiles");
-		const metadata = index[file];
-		if (!metadata) {
-			res.status(404).send("Can not find tile set " + mbtilePath);
-			res.end();
-			return;
-		}
-		const format = getFormat(metadata);
-		readTile(mbtilePath, z, x, y)
+	app.get("*/:z/:x/:y", (req, res, next) => {
+		const { z, x, y } = req.params;
+		const file = req.params[0];
+		const metadata = index.get(file);
+		if (!metadata) return next();
+		const format = getFormat(metadata.mbtiles);
+		readTile(metadata.file.path, z, x, y)
 			.then(blob => {
 				res.setHeader("Content-Type", format.contentType);
-				res.setHeader("Content-Encoding", "gzip");
+				if (format.contentEncoding)
+					res.setHeader("Content-Encoding", format.contentEncoding);
 				if (blob) {
 					res.end(Buffer.from(blob, "binary"));
 				} else
@@ -50,5 +47,14 @@ module.exports = function(app, rootDirectory, index) {
 				res.status(500).send(e.message);
 				res.end();
 			});
+	});
+
+	app.get("*?", (req, res, next) => {
+		const path = req.params[0];
+		const listing = index.generateListing(path);
+		if (!listing) return next();
+		res.setHeader("Content-Type", "text/html");
+
+		res.send(listing);
 	});
 };

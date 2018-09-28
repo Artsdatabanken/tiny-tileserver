@@ -3,8 +3,8 @@ const log = require("log-less-fancy")();
 const formats = {
 	pbf: {
 		contentType: "application/x-protobuf",
-		extension: "pbf",
-		gzip: true
+		contentEncoding: "gzip",
+		extension: "pbf"
 	},
 	png: { contentType: "image/png", extension: "png" },
 	jpg: { contentType: "image/jpg", extension: "jpg" }

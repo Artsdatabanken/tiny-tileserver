@@ -80,7 +80,7 @@ class Index {
 	}
 
 	htmlRow(key, ext, size, modified, extra) {
-		return `<tr><td><a href="${key}">${key}</a></td><td>${ext}</td><td align="right">${size}</td><td>${modified &&
+		return `<tr><td><a href="${key}">${key}</a></td><td>${ext}</td><td class="right">${size}</td><td>${modified &&
       modified.toISOString()}</td><td>${extra}</td></tr>`;
 	}
 

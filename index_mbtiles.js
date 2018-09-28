@@ -68,10 +68,8 @@ class Index {
 	}
 
 	get(relativePath) {
-		console.log("get", relativePath);
 		const parts = relativePath.split("/");
 		let node = this.index;
-		let part = null;
 		for (const part of parts) {
 			if (part) {
 				if (!node.files[part]) return null;
@@ -82,7 +80,7 @@ class Index {
 	}
 
 	htmlRow(key, ext, size, modified, extra) {
-		return `<tr><td><a href="${key}">${key}</a></td><td>${ext}</td><td>${size}</td><td>${modified &&
+		return `<tr><td><a href="${key}">${key}</a></td><td>${ext}</td><td align="right">${size}</td><td>${modified &&
       modified.toISOString()}</td><td>${extra}</td></tr>`;
 	}
 
@@ -93,7 +91,8 @@ class Index {
 			const htmlFragment = Object.keys(node.files)
 				.map(key => {
 					const item = node.files[key];
-					if (item.isDirectory) return this.htmlRow(key, "", "", "", "");
+					if (item.isDirectory)
+						return this.htmlRow(key, "directory", "", "", "");
 					const mbtiles = item.mbtiles;
 					return this.htmlRow(
 						key,
@@ -101,7 +100,7 @@ class Index {
 						item.file.size,
 						item.file.modified,
 						mbtiles
-							? `${mbtiles.format} format, zoom levels ${mbtiles.minzoom} - ${
+							? `${mbtiles.format}, zoom ${mbtiles.minzoom} - ${
 								mbtiles.maxzoom
 							}`
 							: ""

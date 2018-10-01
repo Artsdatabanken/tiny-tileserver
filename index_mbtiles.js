@@ -89,7 +89,7 @@ class Index {
       if (part) {
         if (node.isDirectory) {
           if (!node.files[part]) {
-            return null
+            return { node: null }
           } else node = node.files[part]
         } else {
           return { node: node, fragment: parts.slice(i) }

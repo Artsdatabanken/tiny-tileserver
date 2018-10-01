@@ -51,8 +51,10 @@ module.exports = function(app, rootDirectory, index) {
 					const compression = getCompression(blob);
 					if (compression) res.setHeader("Content-Encoding", compression);
 					res.end(Buffer.from(blob, "binary"));
-				} else
+				} else {
+					res.setHeader("Content-Encoding", "gzip"); //TODO
 					res.sendFile("data/empty." + format.extension, { root: __dirname });
+				}
 			})
 			.catch(e => next(e));
 	});

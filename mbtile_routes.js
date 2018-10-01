@@ -3,8 +3,8 @@ const log = require("log-less-fancy")();
 const pjson = require("./package.json");
 const getFormat = require("./tileformat");
 const { addUrl } = require("./addUrl");
-const { toGeoJson } = require("./protobuf");
 const { generateListing } = require("./html");
+const { toGeoJson, getCompression } = require("./protobuf");
 
 module.exports = function(app, rootDirectory, index) {
 	app.use((req, res, next) => {
@@ -36,42 +36,35 @@ module.exports = function(app, rootDirectory, index) {
 				res.setHeader("Content-Type", "application/json");
 				res.json(geojson);
 			})
-			.catch(e => {
-				log.error(e);
-				res.status(500).send(e.message);
-				res.end();
-			});
+			.catch(e => next(e));
 	});
 	app.get("*/:z(\\d+)/:x(\\d+)/:y(\\d+)", (req, res, next) => {
 		const { z, x, y } = req.params;
 		const file = req.params[0];
 		const metadata = index.get(file).node;
 		if (!metadata) return next();
-		const format = getFormat(metadata.mbtiles);
 		readTile(metadata.file.path, z, x, y)
 			.then(blob => {
+				const format = getFormat(metadata.mbtiles.format);
 				res.setHeader("Content-Type", format.contentType);
-				if (format.contentEncoding)
-					res.setHeader("Content-Encoding", format.contentEncoding);
 				if (blob) {
+					const compression = getCompression(blob);
+					if (compression) res.setHeader("Content-Encoding", compression);
 					res.end(Buffer.from(blob, "binary"));
 				} else
 					res.sendFile("data/empty." + format.extension, { root: __dirname });
 			})
-			.catch(e => {
-				log.error(e);
-				res.status(500).send(e.message);
-				res.end();
-			});
+			.catch(e => next(e));
 	});
 
 	app.get("*?", (req, res, next) => {
 		const path = req.params[0];
-		generateListing(index, path).then(listing => {
-			if (!listing) return next();
-			res.setHeader("Content-Type", "text/html");
-
-			res.send(listing);
-		});
+		generateListing(index, path)
+			.then(listing => {
+				if (!listing) return next();
+				res.setHeader("Content-Type", "text/html");
+				res.send(listing);
+			})
+			.catch(e => next(e));
 	});
 };

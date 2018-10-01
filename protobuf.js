@@ -2,13 +2,25 @@ var vt = require("vector-tile");
 var Protobuf = require("pbf");
 var zlib = require("zlib");
 
-function toGeoJson(x, y, z, buffer) {
-	// handle zipped buffers
-	if (buffer[0] === 0x78 && buffer[1] === 0x9c) {
-		buffer = zlib.inflateSync(buffer);
-	} else if (buffer[0] === 0x1f && buffer[1] === 0x8b) {
-		buffer = zlib.gunzipSync(buffer);
+function getCompression(buffer) {
+	if (buffer[0] === 0x78 && buffer[1] === 0x9c) return "deflate";
+	if (buffer[0] === 0x1f && buffer[1] === 0x8b) return "gzip";
+	return null;
+}
+
+function decompress(buffer) {
+	switch (getCompression(buffer)) {
+	case "deflate":
+		return zlib.inflateSync(buffer);
+	case "gzip":
+		return zlib.gunzipSync(buffer);
+	default:
+		return buffer;
 	}
+}
+
+function toGeoJson(x, y, z, buffer) {
+	buffer = decompress(buffer);
 
 	var tile = new vt.VectorTile(new Protobuf(buffer));
 	var layers = Object.keys(tile.layers);
@@ -27,4 +39,4 @@ function toGeoJson(x, y, z, buffer) {
 	return collection;
 }
 
-module.exports = { toGeoJson };
+module.exports = { toGeoJson, getCompression, decompress };

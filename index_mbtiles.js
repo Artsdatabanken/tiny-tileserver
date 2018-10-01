@@ -3,8 +3,6 @@ const { readMetadata, listFiles } = require("./mbtileReader")
 const fs = require("fs")
 var path = require("path")
 
-const template = fs.readFileSync("index.html", "utf8")
-
 const walkSync = (dir, filelist = {}, mapFile) =>
   fs
     .readdirSync(dir)
@@ -42,9 +40,9 @@ function mapFile(dir, file) {
   const stat = fs.statSync(filepath)
   const meta = {
     name: parsed.name,
+    link: parsed.base.replace(".mbtiles", ""),
     file: {
       ext: parsed.ext,
-      file: parsed.base,
       path: filepath,
       size: stat.size,
       modified: stat.mtime
@@ -54,6 +52,7 @@ function mapFile(dir, file) {
     case ".mbtiles":
       readMbtilesMeta(filepath, meta)
   }
+  log.info(meta)
   return meta
 }
 
@@ -70,8 +69,7 @@ class Index {
       return
     }
 
-    const mbtiles = node.mbtiles
-    if (!mbtiles) return
+    const mbtiles = node.mbtiles || {}
     target[path] = { ...mbtiles, modified: node.file.modified }
   }
 
@@ -99,11 +97,6 @@ class Index {
     return { node: node, fragment: [] }
   }
 
-  htmlRow(url, file, ext, size, modified, extra) {
-    return `<tr><td><a href="${url}">${file}</a></td><td>${ext}</td><td class="right">${size}</td><td>${modified &&
-      modified.toISOString()}</td><td>${extra}</td></tr>`
-  }
-
   scanMbTiles(file, fragment) {
     switch (fragment.length) {
       case 1:
@@ -118,10 +111,12 @@ class Index {
     const list = await listFiles(node.file.path, fragment)
     const isDirectory = fragment.length < 2
     const files = list.reduce((files, row) => {
-      const fn = row[Object.keys(row)[0]]
+      const fn = row[Object.keys(row)[0]].toString()
       files[fn] = {
+        isDirectory: isDirectory,
+        name: fn,
+        link: fn,
         file: {
-          isDirectory: isDirectory,
           modified: node.file.modified,
           ext: isDirectory ? "" : node.mbtiles.format,
           size: isDirectory ? "" : row.size
@@ -131,39 +126,6 @@ class Index {
     }, {})
     node = { isDirectory: true, files: files }
     return node
-  }
-
-  async generateListing(relativePath) {
-    let { node, fragment } = this.get(relativePath)
-    if (!node) return null
-    if (!node.isDirectory) {
-      node = await this.listFileContent(node, fragment)
-    }
-    if (!node) return null
-    if (node.isDirectory) {
-      const htmlFragment = Object.keys(node.files)
-        .map(key => {
-          const item = node.files[key]
-          if (item.isDirectory)
-            return this.htmlRow(key, "directory", "", "", "")
-          const mbtiles = item.mbtiles
-          return this.htmlRow(
-            relativePath + "/" + key,
-            key,
-            item.file.ext,
-            item.file.size,
-            item.file.modified,
-            mbtiles
-              ? `${mbtiles.format}, zoom ${mbtiles.minzoom} - ${
-                  mbtiles.maxzoom
-                }`
-              : ""
-          )
-        })
-        .join("\n")
-      return template.replace("$rows", htmlFragment)
-    }
-    return `<pre>${JSON.stringify(node.mbtiles, null, 2)}</pre>`
   }
 }
 

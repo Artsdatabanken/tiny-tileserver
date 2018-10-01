@@ -29,7 +29,7 @@ function readMbtilesMeta(filepath, meta) {
     }
 
     delete mbmeta.json
-    meta.mbtiles = mbmeta
+    meta.content = mbmeta
   })
 }
 
@@ -41,6 +41,9 @@ function mapFile(dir, file) {
   const meta = {
     name: parsed.name,
     link: parsed.base.replace(".mbtiles", ""),
+    content: {
+      format: ext.substring(1)
+    },
     file: {
       ext: parsed.ext,
       path: filepath,
@@ -52,7 +55,6 @@ function mapFile(dir, file) {
     case ".mbtiles":
       readMbtilesMeta(filepath, meta)
   }
-  log.info(meta)
   return meta
 }
 
@@ -69,8 +71,8 @@ class Index {
       return
     }
 
-    const mbtiles = node.mbtiles || {}
-    target[path] = { ...mbtiles, modified: node.file.modified }
+    const content = node.content || {}
+    target[path] = { ...content, modified: node.file.modified }
   }
 
   jsonSummary() {
@@ -118,7 +120,7 @@ class Index {
         link: fn,
         file: {
           modified: node.file.modified,
-          ext: isDirectory ? "" : node.mbtiles.format,
+          ext: isDirectory ? "" : node.content.format,
           size: isDirectory ? "" : row.size
         }
       }

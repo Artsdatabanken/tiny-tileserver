@@ -61,7 +61,9 @@ module.exports = function(app, rootDirectory, index) {
 		const path = req.params[0];
 		generateListing(index, path)
 			.then(listing => {
+				console.log("l1", listing);
 				if (!listing) return next();
+				console.log("l2", listing);
 				res.setHeader("Content-Type", "text/html");
 				res.send(listing);
 			})

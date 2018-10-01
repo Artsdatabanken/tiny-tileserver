@@ -1,9 +1,7 @@
 const log = require("log-less-fancy")()
 const { readMetadata, listFiles } = require("./mbtileReader")
-const fs = require("fs")
 var path = require("path")
-
-const template = fs.readFileSync("index.html", "utf8")
+const fs = require("fs")
 
 const walkSync = (dir, filelist = {}, mapFile) =>
   fs
@@ -99,11 +97,6 @@ class Index {
     return { node: node, fragment: [] }
   }
 
-  htmlRow(url, file, ext, size, modified, extra) {
-    return `<tr><td><a href="${url}">${file}</a></td><td>${ext}</td><td class="right">${size}</td><td>${modified &&
-      modified.toISOString()}</td><td>${extra}</td></tr>`
-  }
-
   scanMbTiles(file, fragment) {
     switch (fragment.length) {
       case 1:
@@ -131,39 +124,6 @@ class Index {
     }, {})
     node = { isDirectory: true, files: files }
     return node
-  }
-
-  async generateListing(relativePath) {
-    let { node, fragment } = this.get(relativePath)
-    if (!node) return null
-    if (!node.isDirectory) {
-      node = await this.listFileContent(node, fragment)
-    }
-    if (!node) return null
-    if (node.isDirectory) {
-      const htmlFragment = Object.keys(node.files)
-        .map(key => {
-          const item = node.files[key]
-          if (item.isDirectory)
-            return this.htmlRow(key, "directory", "", "", "")
-          const mbtiles = item.mbtiles
-          return this.htmlRow(
-            relativePath + "/" + key,
-            key,
-            item.file.ext,
-            item.file.size,
-            item.file.modified,
-            mbtiles
-              ? `${mbtiles.format}, zoom ${mbtiles.minzoom} - ${
-                  mbtiles.maxzoom
-                }`
-              : ""
-          )
-        })
-        .join("\n")
-      return template.replace("$rows", htmlFragment)
-    }
-    return `<pre>${JSON.stringify(node.mbtiles, null, 2)}</pre>`
   }
 }
 

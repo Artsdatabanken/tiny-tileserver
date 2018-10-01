@@ -2,9 +2,10 @@ const fs = require("fs")
 const template = fs.readFileSync("index.html", "utf8")
 var path = require("path")
 
-function htmlRow(relativePath, file, ext, size, modified, extra) {
-  const url = path.join(relativePath, file) + ext
-  return `<tr><td><a href="${url}">${file}</a></td><td>${ext}</td><td class="right">${size}</td><td>${modified &&
+function htmlRow(name, relativePath, file, ext, size, modified, extra) {
+  const url = path.join(relativePath, file)
+  return `<tr><td><a href="${url}">${name}</a></td><td>${ext ||
+    "Directory"}</td><td class="right">${size}</td><td>${modified &&
     modified.toISOString()}</td><td>${extra}</td></tr>`
 }
 
@@ -20,11 +21,12 @@ async function generateListing(index, relativePath) {
     .map(key => {
       const item = node.files[key]
       if (item.isDirectory)
-        return htmlRow(relativePath, key, "directory", "", "", "")
+        return htmlRow(key, relativePath, key, "", "", "", "")
       const mbtiles = item.mbtiles
       return htmlRow(
+        item.name,
         relativePath,
-        key,
+        item.link,
         item.file.ext,
         item.file.size,
         item.file.modified,

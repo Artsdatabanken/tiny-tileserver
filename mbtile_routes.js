@@ -7,16 +7,6 @@ const { generateListing } = require("./html");
 const { toGeoJson, getCompression } = require("./protobuf");
 
 module.exports = function(app, rootDirectory, index) {
-	app.use((req, res, next) => {
-		res.setHeader(
-			"Access-Control-Allow-Headers",
-			"Origin, X-Requested-With, Content-Type, Accept"
-		);
-		res.setHeader("Access-Control-Allow-Origin", "*");
-		res.setHeader("Cache-Control", "public, immutable, max-age=31557600"); // 1 year
-		next();
-	});
-
 	app.get("/all", (req, res) => {
 		res.json({ version: pjson.version, tilesets: addUrl(index, req) });
 	});

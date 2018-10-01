@@ -40,4 +40,27 @@ function readMetadata(file) {
 	});
 }
 
-module.exports = { readTile, readMetadata };
+function listFiles(file, filter) {
+	log.info("Open " + file);
+	if (filter.length === 2) filter[1] = Math.pow(2, filter[0]) - 1 - filter[1];
+	return new Promise((resolve, reject) => {
+		const sql = {
+			0: "SELECT DISTINCT zoom_level FROM tiles",
+			1: "SELECT (2 << zoom_level - 1) - 1 - tile_row FROM tiles WHERE zoom_level=?",
+			2: "SELECT tile_column, length(tile_data) AS size FROM tiles WHERE zoom_level=? AND tile_row=?"
+		};
+
+		const db = new sqlite3.Database(file, sqlite3.OPEN_READONLY, err => {
+			if (err) return reject(err);
+			db.all(sql[filter.length], filter, (err, records) => {
+				db.close();
+				if (err) {
+					return reject("err");
+				}
+				resolve(records);
+			});
+		});
+	});
+}
+
+module.exports = { readTile, readMetadata, listFiles };

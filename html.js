@@ -15,7 +15,6 @@ async function generateListing(index, relativePath) {
     node = await index.listFileContent(node, fragment)
   }
   if (!node) return null
-  console.log("node", node)
   if (!node.isDirectory) return null
   const htmlFragment = Object.keys(node.files)
     .map(key => {

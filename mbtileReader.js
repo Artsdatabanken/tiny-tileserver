@@ -42,9 +42,7 @@ function readMetadata(file) {
 
 function listFiles(file, filter) {
 	log.info("Open " + file);
-	console.log(filter);
 	if (filter.length === 3) filter[2] = Math.pow(2, filter[0]) - 1 - filter[2];
-	console.log(filter);
 	return new Promise((resolve, reject) => {
 		const sql = {
 			0: "SELECT DISTINCT zoom_level FROM tiles",

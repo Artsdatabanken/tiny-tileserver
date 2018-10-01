@@ -45,7 +45,7 @@ module.exports = function(app, rootDirectory, index) {
 		if (!metadata) return next();
 		readTile(metadata.file.path, z, x, y)
 			.then(blob => {
-				const format = getFormat(metadata.mbtiles.format);
+				const format = getFormat(metadata.content.format);
 				res.setHeader("Content-Type", format.contentType);
 				if (blob) {
 					const compression = getCompression(blob);

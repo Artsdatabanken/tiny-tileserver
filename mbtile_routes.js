@@ -4,6 +4,7 @@ const pjson = require("./package.json");
 const getFormat = require("./tileformat");
 const { addUrl } = require("./addUrl");
 const { toGeoJson } = require("./protobuf");
+const { generateListing } = require("./html");
 
 module.exports = function(app, rootDirectory, index) {
 	app.use((req, res, next) => {
@@ -66,7 +67,7 @@ module.exports = function(app, rootDirectory, index) {
 
 	app.get("*?", (req, res, next) => {
 		const path = req.params[0];
-		index.generateListing(path).then(listing => {
+		generateListing(index, path).then(listing => {
 			if (!listing) return next();
 			res.setHeader("Content-Type", "text/html");
 

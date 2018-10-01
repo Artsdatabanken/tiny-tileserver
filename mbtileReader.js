@@ -49,7 +49,6 @@ function listFiles(file, filter) {
 			1: "SELECT DISTINCT tile_column FROM tiles WHERE zoom_level=?",
 			2: "SELECT (2 << zoom_level - 1) - 1 - tile_row, length(tile_data) AS size FROM tiles WHERE zoom_level=? AND tile_column=?"
 		};
-
 		const db = new sqlite3.Database(file, sqlite3.OPEN_READONLY, err => {
 			if (err) return reject(err);
 			db.all(sql[filter.length], filter, (err, records) => {

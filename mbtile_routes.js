@@ -36,11 +36,7 @@ module.exports = function(app, rootDirectory, index) {
 				res.setHeader("Content-Type", "application/json");
 				res.json(geojson);
 			})
-			.catch(e => {
-				log.error(e);
-				res.status(500).send(e.message);
-				res.end();
-			});
+			.catch(e => next(e));
 	});
 	app.get("*/:z(\\d+)/:x(\\d+)/:y(\\d+)", (req, res, next) => {
 		const { z, x, y } = req.params;
@@ -58,20 +54,17 @@ module.exports = function(app, rootDirectory, index) {
 				} else
 					res.sendFile("data/empty." + format.extension, { root: __dirname });
 			})
-			.catch(e => {
-				log.error(e);
-				res.status(500).send(e.message);
-				res.end();
-			});
+			.catch(e => next(e));
 	});
 
 	app.get("*?", (req, res, next) => {
 		const path = req.params[0];
-		generateListing(index, path).then(listing => {
-			if (!listing) return next();
-			res.setHeader("Content-Type", "text/html");
-
-			res.send(listing);
-		});
+		generateListing(index, path)
+			.then(listing => {
+				if (!listing) return next();
+				res.setHeader("Content-Type", "text/html");
+				res.send(listing);
+			})
+			.catch(e => next(e));
 	});
 };

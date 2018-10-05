@@ -15,6 +15,21 @@ Navigate to http://localhost:8000/ to display a summary of the tile sets.
 
 Tiles can be pulled using an url of this form: http://localhost:8000/{name}/{zoom}/{x}/{y}
 
+## Configuration
+
+Tiny-tileserver has command-line options:
+
+```
+Usage: node tiny-tileserver.js [options] [rootDirectory]
+
+rootDirectory    Data directory containing .mbtiles
+
+Options:
+   -p PORT --port PORT       Set the HTTP port [8000]
+
+A root directory is required.
+```
+
 ## Images
 
 The following images are built for each tiny-tileserver release, using the Node.js base image.

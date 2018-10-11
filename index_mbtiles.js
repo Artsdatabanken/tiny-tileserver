@@ -22,15 +22,17 @@ const walkSync = (dir, filelist = {}, mapFile) =>
     }, {})
 
 function readMbtilesMeta(filepath, meta) {
-  readMetadata(filepath).then(mbmeta => {
-    if (mbmeta.error) {
-      log.warn(file + ": " + mbmeta.error.message)
-      meta.error = mbmeta.error.message
-    }
+  readMetadata(filepath)
+    .then(mbmeta => {
+      if (mbmeta.error) {
+        log.warn(file + ": " + mbmeta.error.message)
+        meta.error = mbmeta.error.message
+      }
 
-    delete mbmeta.json
-    meta.content = mbmeta
-  })
+      delete mbmeta.json
+      meta.content = mbmeta
+    })
+    .catch(error => (meta.error = error))
 }
 
 function mapFile(dir, file) {
@@ -82,6 +84,7 @@ class Index {
   }
 
   get(relativePath) {
+    if (!relativePath) return { node: null }
     const parts = relativePath.replace(/\/$/, "").split("/")
     let node = this.index
     for (let i = 0; i < parts.length; i++) {

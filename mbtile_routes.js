@@ -15,7 +15,7 @@ module.exports = function(app, rootDirectory, index) {
 		res.json(index.jsonSummary());
 	});
 
-	app.get("*/:z(\\d+)/:x(\\d+)/:y(\\d+)(/|.)json", (req, res, next) => {
+	app.get("*/:z(\\d+)/:x(\\d+)/:y(\\d+)(/|.)(geo)?json", (req, res, next) => {
 		// Sample http://localhost:8000/vector/AO/2/2/1/json
 		const { z, x, y } = req.params;
 		const file = req.params[0];

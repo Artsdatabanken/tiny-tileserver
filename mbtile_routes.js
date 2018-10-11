@@ -10,10 +10,12 @@ module.exports = function(app, rootDirectory, index) {
 	app.get("/all", (req, res) => {
 		res.json({ version: pjson.version, tilesets: addUrl(index, req) });
 	});
+
 	app.get("/MBTiles_metadata.json", (req, res) => {
 		res.json(index.jsonSummary());
 	});
-	app.get("*/:z(\\d+)/:x(\\d+)/:y(\\d+)/json", (req, res, next) => {
+
+	app.get("*/:z(\\d+)/:x(\\d+)/:y(\\d+)(/|.)json", (req, res, next) => {
 		// Sample http://localhost:8000/vector/AO/2/2/1/json
 		const { z, x, y } = req.params;
 		const file = req.params[0];
@@ -28,6 +30,7 @@ module.exports = function(app, rootDirectory, index) {
 			})
 			.catch(e => next(e));
 	});
+
 	app.get("*/:z(\\d+)/:x(\\d+)/:y(\\d+)", (req, res, next) => {
 		const { z, x, y } = req.params;
 		const file = req.params[0];

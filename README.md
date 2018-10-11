@@ -27,7 +27,7 @@ rootDirectory    Data directory containing .mbtiles
 Options:
    -p PORT --port PORT       Set the HTTP port [8000]
 
-A root directory is required.
+A root directory is required
 ```
 
 ## Images

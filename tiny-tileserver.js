@@ -4,6 +4,7 @@ const log = require("log-less-fancy")();
 const minimist = require("minimist");
 const mbtile_routes = require("./mbtile_routes");
 const index_mbtiles = require("./index_mbtiles");
+const pjson = require("./package.json");
 
 var argv = minimist(process.argv.slice(2), { alias: { p: "port" } });
 if (argv._.length !== 1) {
@@ -21,6 +22,7 @@ if (argv._.length !== 1) {
 const app = express();
 
 app.use(function(req, res, next) {
+	res.header("X-Powered-By", "Tiny-tileserver v" + pjson.version);
 	res.header("Access-Control-Allow-Origin", req.get("Origin") || "*");
 	res.header("Access-Control-Allow-Credentials", "true");
 	res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");

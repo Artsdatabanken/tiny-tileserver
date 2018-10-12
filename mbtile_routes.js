@@ -5,6 +5,7 @@ const getFormat = require("./tileformat");
 const { addUrl } = require("./addUrl");
 const { generateListing } = require("./html");
 const { toGeoJson, getCompression } = require("./protobuf");
+const { decodePbf } = require("./pbf_dump");
 
 module.exports = function(app, rootDirectory, index) {
 	app.get("/all", (req, res) => {
@@ -15,38 +16,43 @@ module.exports = function(app, rootDirectory, index) {
 		res.json(index.jsonSummary());
 	});
 
-	app.get("*/:z(\\d+)/:x(\\d+)/:y(\\d+)(/|.)(geo)?json", (req, res, next) => {
+	app.get("*/:z(\\d+)/:x(\\d+)/:y(\\d+)(/|.?):format?", (req, res, next) => {
 		// Sample http://localhost:8000/vector/AO/2/2/1/json
 		const { z, x, y } = req.params;
+		const format = req.params.format || "pbf";
 		const file = req.params[0];
 		const metadata = index.get(file).node;
 		if (!metadata) return next();
 		readTile(metadata.file.path, z, x, y)
 			.then(blob => {
 				if (!blob) return res.status(404);
-				const geojson = toGeoJson(x, y, z, blob);
-				res.setHeader("Content-Type", "application/json");
-				res.json(geojson);
-			})
-			.catch(e => next(e));
-	});
-
-	app.get("*/:z(\\d+)/:x(\\d+)/:y(\\d+)", (req, res, next) => {
-		const { z, x, y } = req.params;
-		const file = req.params[0];
-		const metadata = index.get(file).node;
-		if (!metadata) return next();
-		readTile(metadata.file.path, z, x, y)
-			.then(blob => {
-				const format = getFormat(metadata.content.format);
-				res.setHeader("Content-Type", format.contentType);
-				if (blob) {
-					const compression = getCompression(blob);
-					if (compression) res.setHeader("Content-Encoding", compression);
-					res.end(Buffer.from(blob, "binary"));
-				} else {
-					res.setHeader("Content-Encoding", "gzip"); //TODO
-					res.sendFile("data/empty." + format.extension, { root: __dirname });
+				switch (format.toLowerCase()) {
+				case "json":
+				case "geojson": {
+					const geojson = toGeoJson(x, y, z, blob);
+					res.setHeader("Content-Type", "application/json");
+					res.json(geojson);
+					break;
+				}
+				case "pbf": {
+					const format = getFormat(metadata.content.format);
+					res.setHeader("Content-Type", format.contentType);
+					if (blob) {
+						const compression = getCompression(blob);
+						if (compression) res.setHeader("Content-Encoding", compression);
+						res.end(Buffer.from(blob, "binary"));
+					} else {
+						res.sendFile("data/empty." + format.extension, {
+							root: __dirname
+						});
+					}
+					break;
+				}
+				case "pbfjson":
+					res.json(decodePbf(blob));
+					break;
+				default:
+					return next();
 				}
 			})
 			.catch(e => next(e));

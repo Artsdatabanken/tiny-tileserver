@@ -16,7 +16,7 @@ function htmlRow(
   })
   return `<tr><td><a href="${url}">${name}</a></td><td>${ext ||
     "Directory"}</td><td class="right">${size}</td><td>${modified &&
-    modified.toISOString()}</td><td>${extra}</td></tr>`
+    modified.toISOString()}</td><td style="display: flex">${extra}</td></tr>`
 }
 
 async function generateListing(index, relativePath) {
@@ -33,11 +33,12 @@ async function generateListing(index, relativePath) {
       if (item.isDirectory) return htmlRow(key, path.join(relativePath, key))
       const mbtiles = item.mbtiles
       const url = path.join(relativePath, item.link)
-      const alternateFormats = {}
-      if (item.file.ext === "pbf") {
-        alternateFormats.geojson = url + ".geojson"
-      }
-      console.log(alternateFormats)
+      let alternateFormats = {}
+      if (item.file.ext === "pbf")
+        alternateFormats = {
+          geojson: url + ".geojson",
+          pbfjson: url + ".pbfjson"
+        }
       return htmlRow(
         item.name,
         url,

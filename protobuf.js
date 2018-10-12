@@ -1,4 +1,4 @@
-var vt = require("vector-tile");
+var vt = require("@mapbox/vector-tile");
 var Protobuf = require("pbf");
 var zlib = require("zlib");
 

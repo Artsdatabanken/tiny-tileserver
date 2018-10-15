@@ -41,7 +41,7 @@ Node-RED releases are also tagged with a version label, allowing you to fix on a
 
 You can see a full list of the tagged releases [here](https://hub.docker.com/r/artsdatabanken/tiny-tileserver/tags/).
 
-### Docker image
+### Docker image ##
 
 To use prebuilt docker image, navigate to a folder containing .mbtile file(s) and run
 

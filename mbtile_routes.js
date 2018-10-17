@@ -25,7 +25,8 @@ module.exports = function(app, rootDirectory, index) {
 		if (!metadata) return next();
 		readTile(metadata.file.path, z, x, y)
 			.then(blob => {
-				if (!blob) return res.status(404);
+				if (!blob) res.status(404).send("404 Not found");
+
 				switch (format.toLowerCase()) {
 				case "json":
 				case "geojson": {

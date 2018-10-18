@@ -33,8 +33,10 @@ Put one or more .mbtiles inside the data subfolder.
 
 Execute:
 
+```
 yarn
 yarn start
+```
 
 Navigate to http://localhost:8000/ to display a summary of the tile sets.
 
@@ -61,7 +63,7 @@ The following images are built for each tiny-tileserver release, using the Node.
 
 - Latest: https://hub.docker.com/r/artsdatabanken/tiny-tileserver/
 
-### Docker image ##
+### Docker image
 
 To use prebuilt docker image, navigate to a folder containing .mbtile file(s) and run
 

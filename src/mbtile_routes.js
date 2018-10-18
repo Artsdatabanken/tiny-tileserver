@@ -1,5 +1,5 @@
 const { readTile } = require("./mbtileReader");
-const pjson = require("./package.json");
+const pjson = require("../package.json");
 const getFormat = require("./tileformat");
 const { addUrl } = require("./addUrl");
 const { generateListing } = require("./html");

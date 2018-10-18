@@ -1,13 +1,18 @@
 {
   "name": "tiny-tileserver",
   "description": "Tiny raster and vector tile server.",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "main": "index.js",
   "engines": {
     "node": ">=10.0.0"
   },
   "devDependencies": {
-    "eslint": "^5.6.1"
+    "eslint": "^5.6.1",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "husky": "^1.1.2",
+    "prettier": "^1.14.3",
+    "pretty-quick": "^1.8.0"
   },
   "scripts": {
     "start": "node tiny-tileserver.js --port 8000 data/"
@@ -20,6 +25,11 @@
     "pbf": "^3.1.0",
     "sqlite3": "^4.0.2",
     "zlib": "^1.0.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   },
   "repository": {
     "type": "git",

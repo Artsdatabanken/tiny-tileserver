@@ -1,5 +1,4 @@
 const { readTile } = require("./mbtileReader");
-const log = require("log-less-fancy")();
 const pjson = require("./package.json");
 const getFormat = require("./tileformat");
 const { addUrl } = require("./addUrl");
@@ -19,22 +18,25 @@ module.exports = function(app, rootDirectory, index) {
 	app.get("*/:z(\\d+)/:x(\\d+)/:y(\\d+)(/|.?):format?", (req, res, next) => {
 		// Sample http://localhost:8000/vector/AO/2/2/1/json
 		const { z, x, y } = req.params;
-		const format = req.params.format || "pbf";
+		const format = (req.params.format || "pbf").toLowerCase();
 		const file = req.params[0];
 		const metadata = index.get(file).node;
 		if (!metadata) return next();
 		readTile(metadata.file.path, z, x, y)
 			.then(blob => {
-				if (!blob) res.status(404).send("404 Not found");
-
-				switch (format.toLowerCase()) {
+				switch (format) {
 				case "json":
 				case "geojson": {
+					if (!blob) return res.status(404).send("404 Not found");
 					const geojson = toGeoJson(x, y, z, blob);
 					res.setHeader("Content-Type", "application/json");
 					res.json(geojson);
 					break;
 				}
+				case "pbfjson":
+					if (!blob) return res.status(404).send("404 Not found");
+					res.json(decodePbf(blob));
+					break;
 				case "pbf": {
 					const format = getFormat(metadata.content.format);
 					res.setHeader("Content-Type", format.contentType);
@@ -49,9 +51,6 @@ module.exports = function(app, rootDirectory, index) {
 					}
 					break;
 				}
-				case "pbfjson":
-					res.json(decodePbf(blob));
-					break;
 				default:
 					return next();
 				}

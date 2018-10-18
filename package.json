@@ -7,7 +7,10 @@
     "node": ">=10.0.0"
   },
   "devDependencies": {
-    "eslint": "^5.6.1"
+    "eslint": "^5.6.1",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "prettier": "^1.14.3"
   },
   "scripts": {
     "start": "node tiny-tileserver.js --port 8000 data/"

@@ -1,6 +1,31 @@
 # tiny-tileserver
 
+[![Build Status](https://travis-ci.org/Artsdatabanken/tiny-tileserver.svg?branch=master)](https://travis-ci.org/Artsdatabanken/tiny-tileserver)
+[![Coverage Status](https://coveralls.io/repos/github/Artsdatabanken/tiny-tileserver/badge.svg?branch=master)](https://coveralls.io/github/Artsdatabanken/tiny-tileserver?branch=master)
+[![Greenkeeper badge](https://badges.greenkeeper.io/Artsdatabanken/tiny-tileserver.svg)](https://greenkeeper.io/)
+[![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
+[![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md#pull-requests)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
+[![Screenshot](doc/screenshot.png "ratatouille screenshot")](https://maps.artsdatabanken.no)
+
+Demo: [tiny-tileserver](https://maps.artsdatabanken.no)
+
 tiny-tileserver is a minimal raster and vector tile server. It only supports .mbtiles containing rasters of .png, .jpg and vector tiles in .pbf protobuf format. Vector tiles needs to be stored gzip compressed in the .mbtiles file.
+
+## Features
+
+- Supports thousands of tile sets
+- Vector tiles (MBTiles)
+  - Serve protobuf .pbf vector tiles
+  - Compressed (deflate, gzip) or uncompressed tiles
+  - Can convert to .geosjon
+  - Return semi-raw protobuf as json (integer coordinates)
+- Raster tiles (MBTiles)
+  - Serve png or jpg raster tiles
+- Static files
+  - Can serve any other file statically
 
 ## Installation
 
@@ -34,12 +59,7 @@ A root directory is required.
 
 The following images are built for each tiny-tileserver release, using the Node.js base image.
 
-- **latest** - uses [mhart/alpine-node](https://hub.docker.com/r/mhart/alpine-node/).
-
-Node-RED releases are also tagged with a version label, allowing you to fix on a specific version: `latest:X.Y.Z`,
-`slim:X.Y.Z`, `rpi:X.Y.Z`.
-
-You can see a full list of the tagged releases [here](https://hub.docker.com/r/artsdatabanken/tiny-tileserver/tags/).
+- Latest: https://hub.docker.com/r/artsdatabanken/tiny-tileserver/
 
 ### Docker image ##
 

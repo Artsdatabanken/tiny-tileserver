@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jpg 1`] = `
+Object {
+  "contentType": "image/jpg",
+  "extension": "jpg",
+}
+`;
+
+exports[`pbf 1`] = `
+Object {
+  "contentType": "application/x-protobuf",
+  "extension": "pbf",
+}
+`;
+
+exports[`png 1`] = `
+Object {
+  "contentType": "image/png",
+  "extension": "png",
+}
+`;
+
+exports[`unknown 1`] = `Object {}`;

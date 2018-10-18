@@ -1,16 +1,11 @@
 const { readTile } = require("./mbtileReader");
 const pjson = require("../package.json");
 const getFormat = require("./tileformat");
-const { addUrl } = require("./addUrl");
 const { generateListing } = require("./html");
 const { toGeoJson, getCompression } = require("./protobuf");
 const { decodePbf } = require("./pbf_dump");
 
 module.exports = function(app, rootDirectory, index) {
-  app.get("/all", (req, res) => {
-    res.json({ version: pjson.version, tilesets: addUrl(index, req) });
-  });
-
   app.get("/MBTiles_metadata.json", (req, res) => {
     res.json(index.jsonSummary());
   });

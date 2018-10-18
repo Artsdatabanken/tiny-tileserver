@@ -22,9 +22,7 @@ function htmlRow(
 async function generateListing(index, relativePath) {
   let { node, fragment } = index.get(relativePath);
   if (!node) return null;
-  if (!node.isDirectory) {
-    node = await index.listFileContent(node, fragment);
-  }
+  if (!node.isDirectory) node = await index.listFileContent(node, fragment);
   if (!node) return null;
   if (!node.isDirectory) return null;
   const htmlFragment = Object.keys(node.files)

@@ -1,6 +1,7 @@
 const fs = require("fs");
 const template = fs.readFileSync("index.html", "utf8");
 var path = require("path");
+const log = require("log-less-fancy")();
 
 function htmlRow(
   name,
@@ -28,6 +29,7 @@ async function generateListing(index, relativePath) {
   const htmlFragment = Object.keys(node.files)
     .map(key => {
       const item = node.files[key];
+      log.warn(item);
       if (item.isDirectory) return htmlRow(key, path.join(relativePath, key));
       const mbtiles = item.mbtiles;
       const url = path.join(relativePath, item.link);
@@ -36,6 +38,10 @@ async function generateListing(index, relativePath) {
         alternateFormats = {
           geojson: url + ".geojson",
           pbfjson: url + ".pbfjson"
+        };
+      if (item.file.ext === ".mbtiles")
+        alternateFormats = {
+          mbtiles: url + ".mbtiles"
         };
       return htmlRow(
         item.name,

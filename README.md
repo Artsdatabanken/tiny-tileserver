@@ -12,7 +12,7 @@
 
 Demo: [tiny-tileserver](https://maps.artsdatabanken.no)
 
-tiny-tileserver is a minimal raster and vector tile server. It only supports .mbtiles containing rasters of .png, .jpg and vector tiles in .pbf protobuf format. Vector tiles needs to be stored gzip compressed in the .mbtiles file.
+tiny-tileserver is a minimal raster and vector tile server. It supports .mbtiles containing rasters of .png, .jpg and vector tiles in .pbf protobuf format.
 
 ## Features
 

@@ -29,7 +29,6 @@ async function generateListing(index, relativePath) {
   const htmlFragment = Object.keys(node.files)
     .map(key => {
       const item = node.files[key];
-      log.warn(item);
       if (item.isDirectory) return htmlRow(key, path.join(relativePath, key));
       const mbtiles = item.mbtiles;
       const url = path.join(relativePath, item.link);

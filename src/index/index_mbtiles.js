@@ -1,5 +1,5 @@
 const log = require("log-less-fancy")();
-const { readMetadata, listFiles } = require("./mbtileReader");
+const { readMetadata, listFiles } = require("../mbtileReader");
 const fs = require("fs");
 var path = require("path");
 

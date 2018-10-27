@@ -2,8 +2,8 @@ const path = require("path");
 const express = require("express");
 const log = require("log-less-fancy")();
 const minimist = require("minimist");
-const mbtile_routes = require("./src/mbtile_routes");
-const index_mbtiles = require("./src/index/index_mbtiles");
+const routes = require("./src/routes");
+const indexer = require("./src/index/index");
 const pjson = require("./package.json");
 
 var argv = minimist(process.argv.slice(2), { alias: { p: "port" } });
@@ -45,8 +45,8 @@ staticDirs.forEach(dir =>
   app.use(express.static(dir, { maxAge: 86400000, immutable: true }))
 );
 
-const index = index_mbtiles(rootDirectory);
-mbtile_routes(app, rootDirectory, index);
+const index = indexer(rootDirectory);
+routes(app, rootDirectory, index);
 
 app.listen(port, () => {
   log.info("Server root directory " + rootDirectory);

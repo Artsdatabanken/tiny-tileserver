@@ -3,8 +3,7 @@ const mbTileReader = require("../mbtileReader");
 const sqliteReader = require("../sqliteReader");
 const fs = require("fs");
 var path = require("path");
-const readMbtilesMeta = require("./mbtiles");
-const { readSqliteMeta } = require("./sqlite");
+const fileformat = require("../fileformat");
 
 const walkSync = (dir, filelist = {}, mapFile) =>
   fs
@@ -14,7 +13,7 @@ const walkSync = (dir, filelist = {}, mapFile) =>
         fs.statSync(path.join(dir, file)).isDirectory()
           ? {
               name: file,
-              isDirectory: true,
+              type: "directory",
               files: walkSync(path.join(dir, file), filelist, mapFile)
             }
           : mapFile(dir, file)
@@ -32,24 +31,13 @@ function mapFile(dir, file) {
   const meta = {
     name: parsed.name,
     link: parsed.base.replace(".mbtiles", "").replace(".sqlite", ""),
-    content: {
-      format: ext.substring(1)
-    },
-    file: {
-      ext: parsed.ext,
-      path: filepath,
-      size: stat.size,
-      modified: stat.mtime
-    }
+    type: fileformat.getTypeFromFileExt(ext.substring(1)),
+    fileext: parsed.ext,
+    filepath: filepath,
+    filesize: stat.size,
+    filemodified: stat.mtime
   };
-  switch (ext) {
-    case ".mbtiles":
-      readMbtilesMeta(filepath, meta);
-      break;
-    case ".sqlite":
-      readSqliteMeta(filepath, meta);
-      break;
-  }
+  fileformat.indexContents(meta.type, filepath, meta);
   return meta;
 }
 
@@ -59,7 +47,7 @@ class Index {
   }
 
   jsonSummarySubtree(node, path, target) {
-    if (node.isDirectory) {
+    if (node.type === "directory") {
       Object.keys(node.files).forEach(file =>
         this.jsonSummarySubtree(node.files[file], path + "/" + file, target)
       );
@@ -67,7 +55,7 @@ class Index {
     }
 
     const content = node.content || {};
-    target[path] = { ...content, modified: node.file.modified };
+    target[path] = { ...content, modified: node.filemodified };
   }
 
   jsonSummary() {
@@ -76,69 +64,55 @@ class Index {
     return r;
   }
 
-  get(relativePath) {
-    if (!relativePath) return { node: null };
-    const parts = relativePath.replace(/\/$/, "").split("/");
-    let node = this.index;
-    for (let i = 0; i < parts.length; i++) {
-      const part = parts[i];
-      if (part) {
-        if (node.isDirectory) {
-          if (!node.files[part]) {
-            return { node: null };
-          } else node = node.files[part];
-        } else {
-          return { node: node, fragment: parts.slice(i) };
-        }
-      }
-    }
-    return { node: node, fragment: [] };
+  async get(relativePath) {
+    return new Promise((resolve, reject) => {
+      this.get2(relativePath).then(node => {
+        resolve(node);
+      });
+    });
   }
 
-  scanMbTiles(file, fragment) {
-    switch (fragment.length) {
-      case 1:
-        mbtil;
+  async get2(relativePath) {
+    if (!relativePath) return null;
+    const parts = relativePath.replace(/\/$/, "").split("/");
+    let node = this.index;
+    while (true) {
+      if (parts.length === 0) return node;
+      const part = parts.shift();
+      console.log(part, fileformat);
+      node = await fileformat.get(node, part);
+      console.log("node", node);
+      console.log("part", parts);
+      if (node.type !== "directory") break;
     }
+    console.log(node, parts);
+    return await fileformat.get(node, parts);
   }
 
   async listFileContent(node, fragment) {
-    let list = [];
-    let isDirectory = false;
-    console.log(node);
-    switch (node.file.ext) {
-      case ".mbtiles":
-        list = await mbTileReader.listFiles(node.file.path, fragment);
-        isDirectory = fragment.length < 2;
-        break;
-      case ".sqlite":
-        list = await sqliteReader.listFiles(node.file.path, fragment);
-        break;
-      default:
-        return fragment.length === 0 ? node : null;
-    }
+    let list = fileformat.listFiles(node.fileext, node.filepath, fragment);
+    if (!list) return fragment.length === 0 && node;
+
     const files = list.reduce((files, row) => {
       const fn = row[Object.keys(row)[0]].toString();
       files[fn] = {
-        isDirectory: isDirectory,
+        type: type,
         name: fn,
         link: fn,
-        file: {
-          modified: node.file.modified,
-          ext: isDirectory ? "" : node.content.format,
-          size: isDirectory ? "" : row.size
-        }
+        filemodified: node.filemodified,
+        fileext: node.fileext,
+        filesize: row.size
       };
       return files;
     }, {});
-    node = { isDirectory: true, files: files };
+    node = { type: "directory", files: files };
     return node;
   }
 }
 
 function index(rootDirectory) {
   const index = walkSync(rootDirectory, {}, mapFile);
-  return new Index({ isDirectory: true, files: index });
+  return new Index({ type: "directory", files: index });
 }
 
 module.exports = index;

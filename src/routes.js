@@ -1,16 +1,17 @@
 const { readTile } = require("./mbtileReader");
 const pjson = require("../package.json");
 const getFormat = require("./tileformat");
-const { generateListing } = require("./html");
+const { generateListing, browse } = require("./html");
 const { toGeoJson, getCompression } = require("./protobuf");
 const { decodePbf } = require("./pbf_dump");
+const { get } = require("./fileformat");
 
 module.exports = function(app, rootDirectory, index) {
   app.get("/MBTiles_metadata.json", (req, res) => {
     res.json(index.jsonSummary());
   });
 
-  app.get("*/:z(\\d+)/:x(\\d+)/:y(\\d+)(/|.?):format?", (req, res, next) => {
+  app.get("xx*/:z(\\d+)/:x(\\d+)/:y(\\d+)(/|.?):format?", (req, res, next) => {
     // Sample http://localhost:8000/vector/AO/2/2/1/json
     const { z, x, y } = req.params;
     const format = (req.params.format || "pbf").toLowerCase();
@@ -54,13 +55,20 @@ module.exports = function(app, rootDirectory, index) {
   });
 
   app.get("*?", (req, res, next) => {
-    const path = req.params[0];
-    generateListing(index, path)
-      .then(listing => {
+    const path = req.params[0] || "";
+    index.get(path).then(node => {
+      if (node.type === "directory") {
+        const listing = browse(node.files, path);
         if (!listing) return next();
         res.setHeader("Content-Type", "text/html");
         res.send(listing);
-      })
-      .catch(e => next(e));
+      } else {
+        res.setHeader("Content-Type", node.contentType);
+        const compression = getCompression(node.buffer);
+        console.log(compression, "compression");
+        if (compression) res.setHeader("Content-Encoding", compression);
+        res.send(node.buffer);
+      }
+    });
   });
 };

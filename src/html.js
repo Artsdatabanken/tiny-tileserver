@@ -20,34 +20,38 @@ function htmlRow(
     modified.toISOString()}</td><td style="display: flex">${extra}</td></tr>`;
 }
 
-async function generateListing(index, relativePath) {
+function generateListing(index, relativePath) {
   let { node, fragment } = index.get(relativePath);
   if (!node) return null;
-  if (!node.isDirectory) node = await index.listFileContent(node, fragment);
-  if (!node) return null;
-  if (!node.isDirectory) return null;
-  const htmlFragment = Object.keys(node.files)
+  if (node.type !== "directory") return null;
+  return browse(node.files, relativePath);
+}
+
+function browse(files, relativePath) {
+  const htmlFragment = Object.keys(files)
     .map(key => {
-      const item = node.files[key];
-      if (item.isDirectory) return htmlRow(key, path.join(relativePath, key));
+      const item = files[key];
+      if (item.type === "directory")
+        return htmlRow(key, path.join(relativePath, key));
       const mbtiles = item.mbtiles;
+      console.log(relativePath, item.link);
       const url = path.join(relativePath, item.link);
       let alternateFormats = {};
-      if (item.file.ext === "pbf")
+      if (item.fileext === "pbf")
         alternateFormats = {
           geojson: url + ".geojson",
           pbfjson: url + ".pbfjson"
         };
-      if (item.file.ext === ".mbtiles")
+      if (item.fileext === ".mbtiles")
         alternateFormats = {
           mbtiles: url + ".mbtiles"
         };
       return htmlRow(
         item.name,
         url,
-        item.file.ext,
-        item.file.size,
-        item.file.modified,
+        item.fileext,
+        item.filesize,
+        item.filemodified,
         alternateFormats,
         mbtiles
           ? `${mbtiles.format}, zoom ${mbtiles.minzoom} - ${mbtiles.maxzoom}`
@@ -58,4 +62,4 @@ async function generateListing(index, relativePath) {
   return template.replace("$rows", htmlFragment);
 }
 
-module.exports = { generateListing };
+module.exports = { generateListing, browse };

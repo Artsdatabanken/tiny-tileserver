@@ -1,7 +1,6 @@
 const fs = require("fs");
 const template = fs.readFileSync("index.html", "utf8");
 var path = require("path");
-const log = require("log-less-fancy")();
 
 function htmlRow(
   name,
@@ -18,13 +17,6 @@ function htmlRow(
   return `<tr><td><a href="${url}">${name}</a></td><td>${ext ||
     "Directory"}</td><td class="right">${size}</td><td>${modified &&
     modified.toISOString()}</td><td style="display: flex">${extra}</td></tr>`;
-}
-
-function generateListing(index, relativePath) {
-  let { node, fragment } = index.get(relativePath);
-  if (!node) return null;
-  if (node.type !== "directory") return null;
-  return browse(node.files, relativePath);
 }
 
 function browse(files, relativePath) {
@@ -65,4 +57,4 @@ function browse(files, relativePath) {
   return node;
 }
 
-module.exports = { generateListing, browse };
+module.exports = { browse };

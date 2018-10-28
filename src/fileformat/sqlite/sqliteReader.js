@@ -5,7 +5,7 @@ async function read(file, table, key) {
   log.info(`Read key ${key} from ${table} in file ${file}`);
   const rows = await dball(
     file,
-    "SELECT verdi from " + safe(table) + " WHERE kode=?",
+    `SELECT verdi from ${safe(table)} WHERE kode=?`,
     [key]
   );
   if (rows.length !== 1) return null;
@@ -14,7 +14,7 @@ async function read(file, table, key) {
 }
 
 async function listRows(file, table) {
-  return await dball(file, "SELECT kode FROM " + safe(table) + " LIMIT 100");
+  return await dball(file, `SELECT kode FROM ${safe(table)} LIMIT 100`);
 }
 
 async function listTables(file, filter) {
@@ -25,7 +25,7 @@ async function listTables(file, filter) {
 }
 
 async function getColumns(file, table) {
-  const records = await dball(file, "PRAGMA table_info('" + safe(table) + "')");
+  const records = await dball(file, `PRAGMA table_info('${safe(table)}')`);
   return records.map(rec => rec.name);
 }
 

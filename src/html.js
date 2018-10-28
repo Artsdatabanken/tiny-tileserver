@@ -58,7 +58,11 @@ function browse(files, relativePath) {
       );
     })
     .join("\n");
-  return template.replace("$rows", htmlFragment);
+  const node = {
+    contentType: "text/html",
+    buffer: template.replace("$rows", htmlFragment)
+  };
+  return node;
 }
 
 module.exports = { generateListing, browse };

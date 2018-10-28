@@ -1,5 +1,5 @@
 const log = require("log-less-fancy")();
-const { safe, dball } = require("./sqlite");
+const { safe, dball } = require("../../sqlite");
 
 async function read(file, table, key) {
   log.info(`Read key ${key} from ${table} in file ${file}`);

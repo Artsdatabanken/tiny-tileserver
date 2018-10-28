@@ -1,8 +1,8 @@
-const { readTile, readMetadata, listFiles } = require("../mbtileReader");
-const { toGeoJson, getCompression } = require("../pbf/protobuf");
-const { decodePbf } = require("../pbf/pbf_dump");
-const getFormat = require("../tileformat");
-const { toObject } = require("../object");
+const { readTile, readMetadata, listFiles } = require("./mbtileReader");
+const { toGeoJson, getCompression } = require("./pbf/protobuf");
+const { decodePbf } = require("./pbf/pbf_dump");
+const getFormat = require("../../tileformat");
+const { toObject } = require("../../object");
 
 function list(type, items, baseUrl) {
   const files = items.map(item => {

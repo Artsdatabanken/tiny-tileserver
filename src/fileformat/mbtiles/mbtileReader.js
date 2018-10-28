@@ -1,6 +1,6 @@
 const log = require("log-less-fancy")();
-const { dball } = require("./sqlite");
-const { toObject } = require("./object");
+const { dball } = require("../../sqlite");
+const { toObject } = require("../../object");
 
 async function readTile(file, zoom, column, row) {
   let dbRow = Math.pow(2, zoom) - 1 - row;

@@ -1,5 +1,5 @@
-const reader = require("../sqliteReader");
-const { toObject } = require("../object");
+const reader = require("./sqliteReader");
+const { toObject } = require("../../object");
 
 async function mapTables(tables, filepath, baseUri) {
   return toObject(

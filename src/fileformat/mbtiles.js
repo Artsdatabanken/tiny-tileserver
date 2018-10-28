@@ -1,6 +1,7 @@
 const { readTile, readMetadata, listFiles } = require("../mbtileReader");
 const { toGeoJson, getCompression } = require("../protobuf");
 const { decodePbf } = require("../pbf_dump");
+const getFormat = require("../tileformat");
 
 function list(type, items, baseUrl) {
   const files = items
@@ -45,18 +46,24 @@ class MbTilesHandler {
         return list(null, raw, node.link);
       case 3:
         const buffer = await readTile(path, ...fragment);
-        if (!buffer) return null;
+        const format = getFormat(node.content.format);
+        if (!buffer) {
+          res.sendFile("data/empty." + format.extension, {
+            root: __dirname
+          });
+          return;
+        }
         const [z, x, y] = fragment;
-        return this.makeFormat(buffer, ext, x, y, z);
+        return this.makeFormat(buffer, ext, format, x, y, z);
     }
     return null;
   }
 
-  makeFormat(buffer, ext, x, y, z) {
+  makeFormat(buffer, ext, format, x, y, z) {
     switch (ext) {
       case ".pbf":
         return {
-          contentType: "application/pbf",
+          contentType: format.contentType,
           buffer: buffer
         };
       case ".pbfjson":

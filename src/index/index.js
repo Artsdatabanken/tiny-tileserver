@@ -65,7 +65,6 @@ class Index {
   }
 
   async get(relativePath, ext) {
-    console.log(relativePath, ext);
     return new Promise((resolve, reject) => {
       this.get2(relativePath, ext).then(node => {
         resolve(node);

@@ -28,12 +28,9 @@ function generateListing(index, relativePath) {
 }
 
 function browse(files, relativePath) {
-  console.log("files", files);
-  console.log("relativePath", relativePath);
   const htmlFragment = Object.keys(files)
     .map(key => {
       const item = files[key];
-      console.log("SSSS", item);
       if (item.type === "directory")
         return htmlRow(key, path.join(relativePath, key));
       const mbtiles = item.mbtiles;

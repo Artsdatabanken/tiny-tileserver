@@ -54,7 +54,6 @@ class SqliteHandler {
   async get(node, fragment) {
     const [key] = fragment;
     const path = node.filepath;
-    console.log(node);
     switch (fragment.length) {
       case 0:
         return list(null, await reader.listRows(path, node.name), node.link);

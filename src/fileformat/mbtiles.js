@@ -45,7 +45,6 @@ class MbTilesHandler {
         return list(null, raw, node.link);
       case 3:
         const buffer = await readTile(path, ...fragment);
-        console.log("buffer", buffer);
         if (!buffer) return null;
         const [z, x, y] = fragment;
         return this.makeFormat(buffer, ext, x, y, z);
@@ -54,7 +53,6 @@ class MbTilesHandler {
   }
 
   makeFormat(buffer, ext, x, y, z) {
-    console.log("ext", ext);
     switch (ext) {
       case ".pbf":
         return {

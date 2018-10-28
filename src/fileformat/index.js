@@ -23,7 +23,6 @@ function indexContents(type, path, meta) {
 }
 
 function get(node, fragment, ext) {
-  console.log(fragment, ext);
   return new Promise((resolve, reject) => {
     const handler = getHandler(node.type);
     handler

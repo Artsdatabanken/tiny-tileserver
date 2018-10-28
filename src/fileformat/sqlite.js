@@ -1,8 +1,9 @@
 const reader = require("../sqliteReader");
+const { toObject } = require("../object");
 
 async function mapTables(tables, filepath, baseUri) {
-  return tables
-    .map(table => {
+  return toObject(
+    tables.map(table => {
       const file = {
         type: "sqlite",
         name: table.name,
@@ -14,27 +15,19 @@ async function mapTables(tables, filepath, baseUri) {
         .then(fields => (file.columns = fields));
       return file;
     })
-    .reduce((acc, e) => {
-      acc[e.name] = e;
-      return acc;
-    }, {});
+  );
 }
 
 function list(type, items, baseUrl) {
-  const files = items
-    .map(item => {
-      const f1 = item[Object.keys(item)[0]];
-      return {
-        type: "sqlite",
-        name: f1,
-        link: f1
-      };
-    })
-    .reduce((acc, c) => {
-      acc[c.name] = c;
-      return acc;
-    }, {});
-  return { type: "directory", files: files };
+  const files = items.map(item => {
+    const f1 = item[Object.keys(item)[0]];
+    return {
+      type: "sqlite",
+      name: f1,
+      link: f1
+    };
+  });
+  return { type: "directory", files: toObject(files) };
 }
 
 class SqliteHandler {
@@ -56,7 +49,11 @@ class SqliteHandler {
     const path = node.filepath;
     switch (fragment.length) {
       case 0:
-        return list(null, await reader.listRows(path, node.name), node.link);
+        return list(
+          "sqlite",
+          await reader.listRows(path, node.name),
+          node.link
+        );
       case 1:
         const buffer = await reader.read(path, node.name, key);
         if (!buffer) return null;

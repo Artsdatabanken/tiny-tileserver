@@ -2,22 +2,18 @@ const { readTile, readMetadata, listFiles } = require("../mbtileReader");
 const { toGeoJson, getCompression } = require("../pbf/protobuf");
 const { decodePbf } = require("../pbf/pbf_dump");
 const getFormat = require("../tileformat");
+const { toObject } = require("../object");
 
 function list(type, items, baseUrl) {
-  const files = items
-    .map(item => {
-      const f1 = item[Object.keys(item)[0]].toString();
-      return {
-        type: "sqlite",
-        name: f1,
-        link: f1
-      };
-    })
-    .reduce((acc, c) => {
-      acc[c.name] = c;
-      return acc;
-    }, {});
-  return { type: "directory", files: files };
+  const files = items.map(item => {
+    const f1 = item[Object.keys(item)[0]].toString();
+    return {
+      type: type,
+      name: f1,
+      link: f1
+    };
+  });
+  return { type: "directory", files: toObject(files) };
 }
 
 class MbTilesHandler {
@@ -43,8 +39,9 @@ class MbTilesHandler {
       case 1:
       case 2:
         const raw = await listFiles(path, fragment);
-        return list(null, raw, node.link);
+        return list("mbtiles", raw, node.link);
       case 3:
+        console.log(node);
         const buffer = await readTile(path, ...fragment);
         const format = getFormat(node.content.format);
         if (!buffer) {
@@ -80,12 +77,6 @@ class MbTilesHandler {
       default:
         return null;
     }
-  }
-
-  listFiles(path, fragment) {
-    const r = {};
-    if (fragment.length < 2) r.type = "directory";
-    return r;
   }
 }
 

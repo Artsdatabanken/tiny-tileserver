@@ -1,14 +1,11 @@
-const log = require("log-less-fancy")();
-const mbTileReader = require("../mbtileReader");
-const sqliteReader = require("../sqliteReader");
 const fs = require("fs");
 var path = require("path");
 const fileformat = require("../fileformat");
+const { toObject } = require("../object");
 
 const walkSync = (dir, filelist = {}, mapFile) =>
-  fs
-    .readdirSync(dir)
-    .map(
+  toObject(
+    fs.readdirSync(dir).map(
       file =>
         fs.statSync(path.join(dir, file)).isDirectory()
           ? {
@@ -18,10 +15,7 @@ const walkSync = (dir, filelist = {}, mapFile) =>
             }
           : mapFile(dir, file)
     )
-    .reduce((o, item) => {
-      o[item.name] = item;
-      return o;
-    }, {});
+  );
 
 function mapFile(dir, file) {
   const ext = path.extname(file).toLowerCase();

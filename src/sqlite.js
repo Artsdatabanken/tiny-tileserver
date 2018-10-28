@@ -1,6 +1,7 @@
 const log = require("log-less-fancy")();
-const sqlite3 = require("sqlite3"); //.verbose();
+const sqlite3 = require("sqlite3");
 
+// Strip injection unsafe characters from argument
 function safe(arg) {
   return arg.replace(/[^0-9a-z]/gi, "");
 }

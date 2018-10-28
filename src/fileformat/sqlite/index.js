@@ -51,11 +51,11 @@ class SqliteHandler {
       case 0:
         return list(
           "sqlite",
-          await reader.listRows(path, node.name),
+          await reader.listRows(path, node.name, node.columns),
           node.link
         );
       case 1:
-        const buffer = await reader.read(path, node.name, key);
+        const buffer = await reader.read(path, node.name, key, node.columns);
         if (!buffer) return null;
         const r = {
           contentType: "application/json",

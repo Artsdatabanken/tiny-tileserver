@@ -1,14 +1,11 @@
-const { readTile } = require("./mbtileReader");
-const pjson = require("../package.json");
-const { generateListing, browse } = require("./html");
-const { toGeoJson, getCompression } = require("./protobuf");
-const { decodePbf } = require("./pbf_dump");
-const { get } = require("./fileformat");
+const { browse } = require("./html");
+const { getCompression } = require("./protobuf");
 const path = require("path");
+const { jsonSummary } = require("./jsonsummary");
 
 module.exports = function(app, rootDirectory, index) {
   app.get("/MBTiles_metadata.json", (req, res) => {
-    res.json(index.jsonSummary());
+    res.json(jsonSummary(index.index));
   });
 
   app.get("*?", (req, res, next) => {

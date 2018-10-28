@@ -46,24 +46,6 @@ class Index {
     this.index = index;
   }
 
-  jsonSummarySubtree(node, path, target) {
-    if (node.type === "directory") {
-      Object.keys(node.files).forEach(file =>
-        this.jsonSummarySubtree(node.files[file], path + "/" + file, target)
-      );
-      return;
-    }
-
-    const content = node.content || {};
-    target[path] = { ...content, modified: node.filemodified };
-  }
-
-  jsonSummary() {
-    const r = {};
-    this.jsonSummarySubtree(this.index, "", r);
-    return r;
-  }
-
   async get(relativePath, ext) {
     return new Promise((resolve, reject) => {
       this.get2(relativePath, ext).then(node => {

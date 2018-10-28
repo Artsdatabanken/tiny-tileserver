@@ -5,8 +5,6 @@ class DirectoryHandler {
     if (!fragment) return node;
     return node.files[fragment];
   }
-
-  listFiles(path, fragment) {}
 }
 
 module.exports = DirectoryHandler;

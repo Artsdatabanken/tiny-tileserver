@@ -4,8 +4,6 @@ class FileHandler {
   async get(node, fragment) {
     return node;
   }
-
-  listFiles(path, fragment) {}
 }
 
 module.exports = FileHandler;

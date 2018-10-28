@@ -2,3 +2,4 @@
 *.geojson
 node_modules/
 .vscode/
+coverage/

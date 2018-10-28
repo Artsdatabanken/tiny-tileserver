@@ -36,14 +36,9 @@ function get(node, fragment, ext) {
   });
 }
 
-function listFiles(type, path, fragment) {
-  const handler = getHandler(type);
-  return handler.listFiles(path, fragment);
-}
-
 function getTypeFromFileExt(ext) {
   if (formats[ext]) return ext;
   return "file";
 }
 
-module.exports = { get, listFiles, indexContents, getTypeFromFileExt };
+module.exports = { get, indexContents, getTypeFromFileExt };

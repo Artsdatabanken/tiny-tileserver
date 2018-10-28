@@ -64,15 +64,16 @@ class Index {
     return r;
   }
 
-  async get(relativePath) {
+  async get(relativePath, ext) {
+    console.log(relativePath, ext);
     return new Promise((resolve, reject) => {
-      this.get2(relativePath).then(node => {
+      this.get2(relativePath, ext).then(node => {
         resolve(node);
       });
     });
   }
 
-  async get2(relativePath) {
+  async get2(relativePath, ext) {
     if (!relativePath) return null;
     const parts = relativePath.replace(/\/$/, "").split("/");
     let node = this.index;
@@ -82,7 +83,7 @@ class Index {
       node = await fileformat.get(node, part);
       if (node.type !== "directory") break;
     }
-    return await fileformat.get(node, parts);
+    return await fileformat.get(node, parts, ext);
   }
 }
 

@@ -1,4 +1,6 @@
 const { readTile, readMetadata, listFiles } = require("../mbtileReader");
+const { toGeoJson, getCompression } = require("../protobuf");
+const { decodePbf } = require("../pbf_dump");
 
 function list(type, items, baseUrl) {
   const files = items
@@ -32,9 +34,8 @@ class MbTilesHandler {
       .catch(error => (meta.error = error));
   }
 
-  async get(node, fragment) {
-    console.log("node", node);
-    console.log("frag", fragment);
+  async get(node, fragment, ext) {
+    ext = ext || ".pbf";
     const path = node.filepath;
     switch (fragment.length) {
       case 0:
@@ -44,14 +45,36 @@ class MbTilesHandler {
         return list(null, raw, node.link);
       case 3:
         const buffer = await readTile(path, ...fragment);
+        console.log("buffer", buffer);
         if (!buffer) return null;
-        const r = {
+        const [z, x, y] = fragment;
+        return this.makeFormat(buffer, ext, x, y, z);
+    }
+    return null;
+  }
+
+  makeFormat(buffer, ext, x, y, z) {
+    console.log("ext", ext);
+    switch (ext) {
+      case ".pbf":
+        return {
           contentType: "application/pbf",
           buffer: buffer
         };
-        return r;
+      case ".pbfjson":
+        return {
+          contentType: "application/json",
+          buffer: decodePbf(buffer)
+        };
+      case ".json":
+      case ".geojson":
+        return {
+          contentType: "application/json",
+          buffer: toGeoJson(x, y, z, buffer)
+        };
+      default:
+        return null;
     }
-    return null;
   }
 
   listFiles(path, fragment) {

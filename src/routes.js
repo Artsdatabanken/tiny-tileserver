@@ -1,5 +1,5 @@
 const { browse } = require("./html");
-const { getCompression } = require("./protobuf");
+const { getCompression } = require("./pbf/protobuf");
 const path = require("path");
 const { jsonSummary } = require("./jsonsummary");
 

@@ -1,6 +1,6 @@
 const reader = require("../sqliteReader");
 
-async function mapTables(tables, filepath) {
+async function mapTables(tables, filepath, baseUri) {
   return tables
     .map(table => {
       const file = {
@@ -25,9 +25,9 @@ function list(type, items, baseUrl) {
     .map(item => {
       const f1 = item[Object.keys(item)[0]];
       return {
-        type: type,
+        type: "sqlite",
         name: f1,
-        link: baseUrl + "/" + f1
+        link: f1
       };
     })
     .reduce((acc, c) => {
@@ -43,24 +43,27 @@ class SqliteHandler {
     reader
       .listTables(filepath)
       .then(tables => {
-        mapTables(tables, filepath).then(files => (meta.files = files));
+        mapTables(tables, filepath, meta.link).then(
+          files => (meta.files = files),
+          meta.link
+        );
       })
       .catch(error => (meta.error = error));
   }
 
   async get(node, fragment) {
-    console.log("#####", node, fragment);
     const [key] = fragment;
     const path = node.filepath;
     switch (fragment.length) {
       case 0:
-        return list(null, await reader.listRows(path, node.name), path);
+        return list(null, await reader.listRows(path, node.name), node.link);
       case 1:
+        const buffer = await reader.read(path, node.name, key);
+        if (!buffer) return null;
         const r = {
           contentType: "application/json",
-          buffer: await reader.read(path, node.name, key)
+          buffer: buffer
         };
-        console.log("#####", r);
         return r;
       default:
         return null;

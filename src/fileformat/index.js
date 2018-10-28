@@ -24,9 +24,7 @@ function indexContents(type, path, meta) {
 
 function get(node, fragment) {
   return new Promise((resolve, reject) => {
-    //    if (!fragment) return resolve(node);
     const handler = getHandler(node.type);
-    console.log("hand", handler);
     handler
       .get(node, fragment)
       .then(r => {

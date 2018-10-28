@@ -7,7 +7,7 @@ function readTile(file, zoom, column, row) {
     log.info(`Read tile ${zoom},${column},${dbRow} from ${file}`);
     const sql =
       "SELECT tile_data from tiles WHERE zoom_level=? AND tile_column=? AND tile_row=?";
-    const db = new sqlite3.cached.Database(file, sqlite3.OPEN_READONLY, err => {
+    const db = new sqlite3.Database(file, sqlite3.OPEN_READONLY, err => {
       if (err) return reject(err);
       db.get(sql, [zoom, column, dbRow], (err, record) => {
         db.close();
@@ -24,23 +24,19 @@ function readMetadata(file) {
   log.info("Open " + file);
   return new Promise((resolve, reject) => {
     const sql = "SELECT name, value from metadata";
-    const db = new sqlite3.cached.Database(
-      file,
-      sqlite3.OPEN_READONLY,
-      error => {
-        if (error) return resolve({ error });
-        db.all(sql, (error, records) => {
-          if (error || !records) return resolve({ error });
+    const db = new sqlite3.Database(file, sqlite3.OPEN_READONLY, error => {
+      if (error) return resolve({ error });
+      db.all(sql, (error, records) => {
+        if (error || !records) return resolve({ error });
 
-          db.close();
-          const meta = records.reduce((acc, row) => {
-            acc[row.name] = row.value;
-            return acc;
-          }, {});
-          resolve(meta);
-        });
-      }
-    );
+        db.close();
+        const meta = records.reduce((acc, row) => {
+          acc[row.name] = row.value;
+          return acc;
+        }, {});
+        resolve(meta);
+      });
+    });
   });
 }
 
@@ -53,10 +49,12 @@ function listFiles(file, filter) {
       1: "SELECT DISTINCT tile_column FROM tiles WHERE zoom_level=?",
       2: "SELECT (2 << zoom_level - 1) - 1 - tile_row, length(tile_data) AS size FROM tiles WHERE zoom_level=? AND tile_column=?"
     };
-    const db = new sqlite3.cached.Database(file, sqlite3.OPEN_READONLY, err => {
+    const db = new sqlite3.Database(file, sqlite3.OPEN_READONLY, err => {
+      console.log(err);
       if (err) return reject(err);
       db.all(sql[filter.length], filter, (err, records) => {
         db.close();
+        console.log(err);
         if (err) return reject(err);
 
         resolve(records);

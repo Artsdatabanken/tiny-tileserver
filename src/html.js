@@ -34,7 +34,6 @@ function browse(files, relativePath) {
       if (item.type === "directory")
         return htmlRow(key, path.join(relativePath, key));
       const mbtiles = item.mbtiles;
-      console.log(relativePath, item.link);
       const url = path.join(relativePath, item.link);
       let alternateFormats = {};
       if (item.fileext === "pbf")

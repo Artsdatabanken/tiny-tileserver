@@ -59,16 +59,15 @@ module.exports = function(app, rootDirectory, index) {
     index
       .get(path)
       .then(node => {
+        if (!node) return next();
         if (node.type === "directory") {
           const listing = browse(node.files, path);
           if (!listing) return next();
           res.setHeader("Content-Type", "text/html");
           res.send(listing);
         } else {
-          if (!node.buffer) return next();
           res.setHeader("Content-Type", node.contentType);
           const compression = getCompression(node.buffer);
-          console.log(compression, "compression");
           if (compression) res.setHeader("Content-Encoding", compression);
           res.send(node.buffer);
         }

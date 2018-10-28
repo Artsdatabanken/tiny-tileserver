@@ -79,34 +79,10 @@ class Index {
     while (true) {
       if (parts.length === 0) return node;
       const part = parts.shift();
-      console.log(part, fileformat);
       node = await fileformat.get(node, part);
-      console.log("node", node);
-      console.log("part", parts);
       if (node.type !== "directory") break;
     }
-    console.log(node, parts);
     return await fileformat.get(node, parts);
-  }
-
-  async listFileContent(node, fragment) {
-    let list = fileformat.listFiles(node.fileext, node.filepath, fragment);
-    if (!list) return fragment.length === 0 && node;
-
-    const files = list.reduce((files, row) => {
-      const fn = row[Object.keys(row)[0]].toString();
-      files[fn] = {
-        type: type,
-        name: fn,
-        link: fn,
-        filemodified: node.filemodified,
-        fileext: node.fileext,
-        filesize: row.size
-      };
-      return files;
-    }, {});
-    node = { type: "directory", files: files };
-    return node;
   }
 }
 

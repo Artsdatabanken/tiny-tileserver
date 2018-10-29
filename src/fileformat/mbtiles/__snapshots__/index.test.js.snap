@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get pbf 1`] = `
+Object {
+  "files": Object {
+    "0": Object {
+      "link": "0",
+      "name": "0",
+      "type": "",
+    },
+    "1": Object {
+      "link": "1",
+      "name": "1",
+      "type": "",
+    },
+    "2": Object {
+      "link": "2",
+      "name": "2",
+      "type": "",
+    },
+    "3": Object {
+      "link": "3",
+      "name": "3",
+      "type": "",
+    },
+    "4": Object {
+      "link": "4",
+      "name": "4",
+      "type": "",
+    },
+  },
+  "type": "directory",
+}
+`;

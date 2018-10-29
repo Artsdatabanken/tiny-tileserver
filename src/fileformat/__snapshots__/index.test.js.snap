@@ -1,0 +1,188 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get tile 1`] = `
+Object {
+  "buffer": Object {
+    "data": Array [
+      31,
+      139,
+      8,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      3,
+      147,
+      138,
+      173,
+      96,
+      226,
+      226,
+      112,
+      244,
+      143,
+      55,
+      52,
+      212,
+      53,
+      49,
+      213,
+      104,
+      80,
+      144,
+      98,
+      73,
+      44,
+      74,
+      77,
+      148,
+      98,
+      73,
+      206,
+      79,
+      73,
+      149,
+      98,
+      201,
+      75,
+      204,
+      77,
+      85,
+      226,
+      230,
+      226,
+      52,
+      180,
+      176,
+      180,
+      48,
+      182,
+      52,
+      50,
+      49,
+      83,
+      226,
+      66,
+      168,
+      86,
+      98,
+      227,
+      98,
+      113,
+      202,
+      207,
+      206,
+      19,
+      146,
+      148,
+      96,
+      22,
+      98,
+      99,
+      96,
+      96,
+      100,
+      100,
+      98,
+      82,
+      226,
+      229,
+      124,
+      196,
+      126,
+      71,
+      76,
+      74,
+      65,
+      194,
+      80,
+      137,
+      89,
+      147,
+      31,
+      0,
+      216,
+      169,
+      196,
+      67,
+      95,
+      0,
+      0,
+      0,
+    ],
+    "type": "Buffer",
+  },
+  "contentType": "application/x-protobuf",
+}
+`;
+
+exports[`get z 1`] = `
+Object {
+  "files": Object {
+    "0": Object {
+      "link": "0",
+      "name": "0",
+      "type": "",
+    },
+    "1": Object {
+      "link": "1",
+      "name": "1",
+      "type": "",
+    },
+    "2": Object {
+      "link": "2",
+      "name": "2",
+      "type": "",
+    },
+    "3": Object {
+      "link": "3",
+      "name": "3",
+      "type": "",
+    },
+    "4": Object {
+      "link": "4",
+      "name": "4",
+      "type": "",
+    },
+  },
+  "type": "directory",
+}
+`;
+
+exports[`get zx 1`] = `
+Object {
+  "files": Object {
+    "4": Object {
+      "link": "4",
+      "name": "4",
+      "type": "",
+    },
+  },
+  "type": "directory",
+}
+`;
+
+exports[`get zxy 1`] = `
+Object {
+  "files": Object {
+    "2": Object {
+      "alternateFormats": Object {
+        "geojson": "2.geojson",
+        "pbfjson": "2.pbfjson",
+      },
+      "link": "2",
+      "name": "2",
+      "type": ".pbf",
+    },
+  },
+  "type": "directory",
+}
+`;
+
+exports[`typeFromFileExt mbtiles 1`] = `"mbtiles"`;
+
+exports[`typeFromFileExt png 1`] = `"file"`;
+
+exports[`typeFromFileExt sqlite 1`] = `"sqlite"`;

@@ -19,6 +19,7 @@
   },
   "scripts": {
     "start": "node tiny-tileserver.js --port 8000 data/",
+    "commit": "npx git-cz",
     "test": "jest --coverage",
     "travis-deploy-once": "travis-deploy-once",
     "semantic-release": "semantic-release"

@@ -20,7 +20,7 @@ async function mapTables(tables, filepath, baseUri) {
 
 function list(type, items, baseUrl) {
   const files = items.map(item => {
-    const f1 = item[Object.keys(item)[0]];
+    const f1 = Object.values(item)[0];
     return {
       type: "sqlite",
       name: f1,
@@ -45,7 +45,6 @@ class SqliteHandler {
   }
 
   async get(node, fragment) {
-    const [key] = fragment;
     const path = node.filepath;
     switch (fragment.length) {
       case 0:
@@ -55,7 +54,12 @@ class SqliteHandler {
           node.link
         );
       case 1:
-        const buffer = await reader.read(path, node.name, key, node.columns);
+        const buffer = await reader.read(
+          path,
+          node.name,
+          fragment,
+          node.columns
+        );
         if (!buffer) return null;
         const r = {
           contentType: "application/json",

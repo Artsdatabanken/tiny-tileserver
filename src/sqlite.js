@@ -5,7 +5,7 @@ var path = require("path");
 
 // Strip injection unsafe characters from argument
 function safe(arg) {
-  return arg.replace(/[^0-9a-z]/gi, "");
+  return arg.replace(/[^0-9a-z_%\-]/gi, "");
 }
 
 function dball(file, sql, args) {

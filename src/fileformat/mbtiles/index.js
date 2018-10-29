@@ -7,7 +7,7 @@ const fs = require("fs");
 
 function list(type, items, baseUrl) {
   const files = items.map(item => {
-    const f1 = item[Object.keys(item)[0]].toString();
+    const f1 = Object.values(item)[0].toString();
     const r = {
       type: type,
       name: f1,

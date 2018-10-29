@@ -34,7 +34,7 @@ async function read(file, table, keys, columns) {
   );
   if (rows.length <= 0) return null;
   const row = rows[0];
-  return row[Object.keys(row)[keys.length]];
+  return Object.values(row)[keys.length];
 }
 
 function whereClause(columns, count) {

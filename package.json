@@ -7,6 +7,7 @@
     "node": ">=10.0.0"
   },
   "devDependencies": {
+    "coveralls": "^3.0.2",
     "eslint": "^5.6.1",
     "eslint-config-prettier": "^3.1.0",
     "eslint-plugin-prettier": "^3.0.0",
@@ -14,13 +15,14 @@
     "jest": "^23.6.0",
     "prettier": "^1.14.3",
     "pretty-quick": "^1.8.0",
-    "travis-deploy-once": "^5.0.9",
-    "semantic-release": "^15.10.3"
+    "semantic-release": "^15.10.3",
+    "travis-deploy-once": "^5.0.9"
   },
   "scripts": {
     "start": "node tiny-tileserver.js --port 8000 data/",
     "commit": "npx git-cz",
     "test": "jest --coverage",
+    "report-coverage": "coveralls < coverage/lcov.info",
     "travis-deploy-once": "travis-deploy-once",
     "semantic-release": "semantic-release"
   },

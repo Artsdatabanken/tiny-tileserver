@@ -24,11 +24,11 @@ async function readMetadata(file) {
 }
 
 async function listFiles(file, filter) {
-  if (filter.length === 3) filter[2] = Math.pow(2, filter[0]) - 1 - filter[2];
+  if (filter.length > 2) return null;
   const sql = {
     0: "SELECT DISTINCT zoom_level FROM tiles",
     1: "SELECT DISTINCT tile_column FROM tiles WHERE zoom_level=?",
-    2: "SELECT (2 << zoom_level - 1) - 1 - tile_row, length(tile_data) AS size FROM tiles WHERE zoom_level=? AND tile_column=?"
+    2: "SELECT (2 << zoom_level - 1) - 1 - tile_row AS row, length(tile_data) AS size FROM tiles WHERE zoom_level=? AND tile_column=?"
   };
   return await dball(file, sql[filter.length], filter);
 }

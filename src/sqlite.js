@@ -1,5 +1,7 @@
 const log = require("log-less-fancy")();
 const sqlite3 = require("sqlite3");
+const fs = require("fs");
+var path = require("path");
 
 // Strip injection unsafe characters from argument
 function safe(arg) {
@@ -8,6 +10,8 @@ function safe(arg) {
 
 function dball(file, sql, args) {
   log.info("Open " + file);
+  log.debug("SQL   : " + sql);
+  log.debug("  args: " + args);
   return new Promise((resolve, reject) => {
     const db = new sqlite3.Database(file, sqlite3.OPEN_READONLY, err => {
       if (err) return reject(err);

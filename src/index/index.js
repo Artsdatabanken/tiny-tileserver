@@ -31,6 +31,11 @@ function mapFile(dir, file) {
     filesize: stat.size,
     filemodified: stat.mtime
   };
+  if (meta.type === "mbtiles") {
+    meta.alternateFormats = {
+      mbtiles: parsed.base
+    };
+  }
   fileformat.indexContents(meta.type, filepath, meta);
   return meta;
 }

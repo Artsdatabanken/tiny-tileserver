@@ -3,15 +3,22 @@ const { toGeoJson, getCompression } = require("./pbf/protobuf");
 const { decodePbf } = require("./pbf/pbf_dump");
 const getFormat = require("./tileformat");
 const { toObject } = require("../../object");
+const fs = require("fs");
 
 function list(type, items, baseUrl) {
   const files = items.map(item => {
     const f1 = item[Object.keys(item)[0]].toString();
-    return {
+    const r = {
       type: type,
       name: f1,
       link: f1
     };
+    if (type === ".pbf")
+      r.alternateFormats = {
+        geojson: f1 + ".geojson",
+        pbfjson: f1 + ".pbfjson"
+      };
+    return r;
   });
   return { type: "directory", files: toObject(files) };
 }
@@ -39,24 +46,31 @@ class MbTilesHandler {
       case 1:
       case 2:
         const raw = await listFiles(path, fragment);
-        return list("mbtiles", raw, node.link);
+        return await list(["", "", ext][fragment.length], raw, node.link);
       case 3:
-        console.log(node);
-        const buffer = await readTile(path, ...fragment);
         const format = getFormat(node.content.format);
-        if (!buffer) {
-          res.sendFile("data/empty." + format.extension, {
-            root: __dirname
-          });
-          return;
-        }
+        const buffer = await readTile(path, ...fragment);
+        if (!buffer)
+          return {
+            file: "data/empty." + format.extension,
+            contentType: format.contentType
+          };
+
         const [z, x, y] = fragment;
-        return this.makeFormat(buffer, ext, format, x, y, z);
+        return this.makeFormat(buffer, ext, format, z, x, y);
     }
-    return null;
   }
 
-  makeFormat(buffer, ext, format, x, y, z) {
+  async readFile(path) {
+    return new Promise((resolve, reject) =>
+      fs.readFile(path, (err, data) => {
+        if (err) reject(err);
+        resolve(data);
+      })
+    );
+  }
+
+  makeFormat(buffer, ext, format, z, x, y) {
     switch (ext) {
       case ".pbf":
         return {

@@ -18,6 +18,11 @@ module.exports = function(app, rootDirectory, index) {
         if (!node) return next();
         if (node.type === "directory") node = browse(node.files, relPath);
         res.setHeader("Content-Type", node.contentType);
+        if (!node.buffer) {
+          return res.sendFile(node.file, {
+            root: __dirname
+          });
+        }
         const compression = getCompression(node.buffer);
         if (compression) res.setHeader("Content-Encoding", compression);
         res.send(node.buffer);

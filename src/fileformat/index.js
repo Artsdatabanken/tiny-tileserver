@@ -22,18 +22,9 @@ function indexContents(type, path, meta) {
   return handler.indexContents(path, meta);
 }
 
-function get(node, fragment, ext) {
-  return new Promise((resolve, reject) => {
-    const handler = getHandler(node.type);
-    handler
-      .get(node, fragment, ext)
-      .then(r => {
-        resolve(r);
-      })
-      .catch(err => {
-        log.error(err);
-      });
-  });
+async function get(node, fragment, ext) {
+  const handler = getHandler(node.type);
+  return await handler.get(node, fragment, ext);
 }
 
 function getTypeFromFileExt(ext) {

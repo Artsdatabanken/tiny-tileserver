@@ -4,15 +4,18 @@ var path = require("path");
 
 function htmlRow(
   name,
-  url,
+  baseUrl,
+  filename,
   ext = "",
   size = "",
   modified = "",
   alternateFormats = {},
   extra = ""
 ) {
+  const url = path.join(baseUrl, filename);
   Object.keys(alternateFormats).forEach(key => {
-    extra += `<a href="${alternateFormats[key]}">${key}</a>`;
+    const altUrl = path.join(baseUrl, alternateFormats[key]);
+    extra += `<a href="${altUrl}">${key}</a>`;
   });
   return `<tr><td><a href="${url}">${name}</a></td><td>${ext ||
     "Directory"}</td><td class="right">${size}</td><td>${modified &&
@@ -23,27 +26,16 @@ function browse(files, relativePath) {
   const htmlFragment = Object.keys(files)
     .map(key => {
       const item = files[key];
-      if (item.type === "directory")
-        return htmlRow(key, path.join(relativePath, key));
+      if (item.type === "directory") return htmlRow(key, relativePath, key);
       const mbtiles = item.mbtiles;
-      const url = path.join(relativePath, item.link);
-      let alternateFormats = {};
-      if (item.fileext === "pbf")
-        alternateFormats = {
-          geojson: url + ".geojson",
-          pbfjson: url + ".pbfjson"
-        };
-      if (item.fileext === ".mbtiles")
-        alternateFormats = {
-          mbtiles: url + ".mbtiles"
-        };
       return htmlRow(
         item.name,
-        url,
+        relativePath,
+        item.link,
         item.fileext,
         item.filesize,
         item.filemodified,
-        alternateFormats,
+        item.alternateFormats,
         mbtiles
           ? `${mbtiles.format}, zoom ${mbtiles.minzoom} - ${mbtiles.maxzoom}`
           : ""

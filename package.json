@@ -51,5 +51,14 @@
   "bugs": {
     "url": "https://github.com/Artsdatabanken/tiny-tileserver/issues"
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/node_modules/**"
+    ],
+    "coverageReporters": [
+      "lcov"
+    ]
+  },
   "homepage": "https://github.com/Artsdatabanken/tiny-tileserver#readme"
 }

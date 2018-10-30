@@ -14,7 +14,9 @@ script:
 deploy:
   skip_cleanup: true
   provider: script
-#  script: bash ./deploy.sh production $TRAVIS_TAG
+  script: bash ./deploy.sh
+  on:
+    branch: master
 after_success:
   - npm run report-coverage
   - npm run travis-deploy-once "npm run semantic-release"
@@ -27,6 +29,8 @@ notifications:
 before_install:
   - yarn global add greenkeeper-lockfile@1
   - export PATH=$PATH:`yarn global bin`
+  - docker build .
+  - docker image ls	-a
 before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
 branches:

@@ -30,7 +30,7 @@ before_install:
   - yarn global add greenkeeper-lockfile@1
   - export PATH=$PATH:`yarn global bin`
   - docker build .
-  - docker ps -a
+  - docker image ls	-a
 before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
 branches:

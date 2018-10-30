@@ -1,4 +1,4 @@
-FROM alpine:latest as dep
+FROM node:alpine as dep
 WORKDIR /app
 
 COPY package.json yarn.lock ./

@@ -26,7 +26,6 @@ function browse(files, relativePath) {
   const htmlFragment = Object.keys(files)
     .map(key => {
       const item = files[key];
-      if (item.type === "directory") return htmlRow(key, relativePath, key);
       const mbtiles = item.mbtiles;
       return htmlRow(
         item.name,

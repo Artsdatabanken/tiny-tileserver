@@ -29,7 +29,7 @@ notifications:
 before_install:
   - yarn global add greenkeeper-lockfile@1
   - export PATH=$PATH:`yarn global bin`
-  - docker build .
+  - docker build --tag artsdatabanken/tiny-tileserver .
   - docker image ls	-a
 before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload

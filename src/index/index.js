@@ -11,6 +11,7 @@ const walkSync = (dir, filelist = {}, mapFile) =>
           ? {
               name: file,
               type: "directory",
+              link: file,
               files: walkSync(path.join(dir, file), filelist, mapFile)
             }
           : mapFile(dir, file)

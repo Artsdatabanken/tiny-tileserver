@@ -62,6 +62,7 @@ class Index {
       if (parts.length === 0) return node;
       const part = parts.shift();
       node = await fileformat.get(node, part);
+      if (!node) return null;
       if (node.type !== "directory") break;
     }
     return await fileformat.get(node, parts, ext);

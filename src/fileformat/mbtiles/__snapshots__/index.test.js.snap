@@ -4,29 +4,34 @@ exports[`get pbf 1`] = `
 Object {
   "files": Object {
     "0": Object {
+      "fileext": "zoom",
+      "filesize": undefined,
       "link": "0",
       "name": "0",
-      "type": "",
     },
     "1": Object {
+      "fileext": "zoom",
+      "filesize": undefined,
       "link": "1",
       "name": "1",
-      "type": "",
     },
     "2": Object {
+      "fileext": "zoom",
+      "filesize": undefined,
       "link": "2",
       "name": "2",
-      "type": "",
     },
     "3": Object {
+      "fileext": "zoom",
+      "filesize": undefined,
       "link": "3",
       "name": "3",
-      "type": "",
     },
     "4": Object {
+      "fileext": "zoom",
+      "filesize": undefined,
       "link": "4",
       "name": "4",
-      "type": "",
     },
   },
   "type": "directory",

@@ -5,6 +5,7 @@ const mbtiles = new MbTilesHandler();
 test("get pbf", async () => {
   const node = {
     type: "mbtiles",
+    content: { format: "pbf" },
     filepath: "./testdata/pbf.mbtiles",
     link: ""
   };

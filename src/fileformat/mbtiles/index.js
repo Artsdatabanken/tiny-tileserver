@@ -5,15 +5,16 @@ const getFormat = require("./tileformat");
 const { toObject } = require("../../object");
 const fs = require("fs");
 
-function list(type, items, baseUrl) {
+function list(type, fileext, items, baseUrl) {
   const files = items.map(item => {
     const f1 = Object.values(item)[0].toString();
     const r = {
-      type: type,
-      name: f1,
+      filesize: item.size,
+      fileext: type,
+      name: f1 + fileext,
       link: f1
     };
-    if (type === ".pbf")
+    if (fileext === ".pbf")
       r.alternateFormats = {
         geojson: f1 + ".geojson",
         pbfjson: f1 + ".pbfjson"
@@ -46,7 +47,12 @@ class MbTilesHandler {
       case 1:
       case 2:
         const raw = await listFiles(path, fragment);
-        return await list(["", "", ext][fragment.length], raw, node.link);
+        return await list(
+          ["zoom", "column", "row"][fragment.length],
+          ["", "", "." + node.content.format][fragment.length],
+          raw,
+          node.link
+        );
       case 3:
         const format = getFormat(node.content.format);
         const buffer = await readTile(path, ...fragment);

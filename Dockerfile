@@ -1,5 +1,4 @@
 FROM node:10-alpine as dep
-WORKDIR /app
 
 COPY package.json yarn.lock ./
 
@@ -8,6 +7,7 @@ RUN apk add --no-cache --virtual .build-deps alpine-sdk python \
     && apk del .build-deps
 
 FROM node:10-alpine
+WORKDIR /app
 COPY --from=dep /app/node_modules ./node_modules
 EXPOSE 8000
 ADD . .

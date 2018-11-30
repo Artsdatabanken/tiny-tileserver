@@ -45,7 +45,7 @@ staticDirs.forEach(dir =>
   app.use(express.static(dir, { maxAge: 86400000, immutable: true }))
 );
 
-const index = indexer(rootDirectory);
+const index = indexer([rootDirectory]);
 routes(app, rootDirectory, index);
 
 app.listen(port, () => {

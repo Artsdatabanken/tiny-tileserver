@@ -1,4 +1,5 @@
 const log = require("log-less-fancy")();
+const fs = require("fs");
 
 const formats = {
   pbf: {
@@ -8,6 +9,11 @@ const formats = {
   png: { contentType: "image/png", extension: "png" },
   jpg: { contentType: "image/jpg", extension: "jpg" }
 };
+
+// Add replacements for missing tiles to avoid 404 errors
+Object.keys(formats).forEach(format => {
+  formats[format].emptyFile = fs.readFileSync("./data/empty." + format);
+});
 
 function getFormatSettings(formatstring) {
   const format = formats[formatstring];

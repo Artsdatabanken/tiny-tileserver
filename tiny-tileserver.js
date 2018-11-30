@@ -40,7 +40,7 @@ app.use(function(req, res, next) {
 
 const port = argv.port || 8000;
 const rootDirectory = path.resolve(argv._[0] || ".");
-const staticDirs = ["data", rootDirectory];
+const staticDirs = ["static", rootDirectory];
 staticDirs.forEach(dir =>
   app.use(express.static(dir, { maxAge: 86400000, immutable: true }))
 );

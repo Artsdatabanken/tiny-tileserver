@@ -12,7 +12,7 @@ const formats = {
 
 // Add replacements for missing tiles to avoid 404 errors
 Object.keys(formats).forEach(format => {
-  formats[format].emptyFile = fs.readFileSync("./data/empty." + format);
+  formats[format].emptyFile = fs.readFileSync("./static/empty." + format);
 });
 
 function getFormatSettings(formatstring) {

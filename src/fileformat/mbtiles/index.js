@@ -58,7 +58,7 @@ class MbTilesHandler {
         const buffer = await readTile(path, ...fragment);
         if (!buffer)
           return {
-            file: "data/empty." + format.extension,
+            buffer: format.emptyFile,
             contentType: format.contentType
           };
 

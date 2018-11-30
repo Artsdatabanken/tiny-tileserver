@@ -4,18 +4,15 @@ const fileformat = require("../fileformat");
 const { toObject } = require("../object");
 
 const walkSync = (dir, filelist = {}, mapFile) =>
-  toObject(
-    fs.readdirSync(dir).map(
-      file =>
-        fs.statSync(path.join(dir, file)).isDirectory()
-          ? {
-              name: file,
-              type: "directory",
-              link: file,
-              files: walkSync(path.join(dir, file), filelist, mapFile)
-            }
-          : mapFile(dir, file)
-    )
+  fs.readdirSync(dir).map(file =>
+    fs.statSync(path.join(dir, file)).isDirectory()
+      ? {
+          name: file,
+          type: "directory",
+          link: file,
+          files: walkSync(path.join(dir, file), filelist, mapFile)
+        }
+      : mapFile(dir, file)
   );
 
 function mapFile(dir, file) {
@@ -25,7 +22,7 @@ function mapFile(dir, file) {
   const stat = fs.statSync(filepath);
   const meta = {
     name: parsed.name,
-    link: parsed.base.replace(".mbtiles", "").replace(".sqlite", ""),
+    link: parsed.base.replace(".mbtiles", "/").replace(".sqlite", "/"),
     type: fileformat.getTypeFromFileExt(ext.substring(1)),
     fileext: parsed.ext,
     filepath: filepath,
@@ -69,9 +66,12 @@ class Index {
   }
 }
 
-function index(rootDirectory) {
-  const index = walkSync(rootDirectory, {}, mapFile);
-  return new Index({ type: "directory", files: index });
+function index(rootPaths) {
+  let entries = [];
+  rootPaths.forEach(
+    path => (entries = entries.concat(walkSync(path, {}, mapFile)))
+  );
+  return new Index({ type: "directory", files: toObject(entries) });
 }
 
 module.exports = index;

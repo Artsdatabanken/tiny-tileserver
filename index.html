@@ -1,132 +1,48 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Directory Contents</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="https://code.getmdl.io/1.3.0/material.green-red.min.css"
+    />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  </head>
 
-<head>
-	<meta charset="UTF-8">
-	<title>Directory Contents</title>
-
-	<style>
-		body {
-			color: #333;
-			font: 14px Roboto;
-			padding: 24px;
-			background: #ddd;
-		}
-
-		h1 {
-			text-align: center;
-			padding: 20px 0 12px 0;
-			margin: 0;
-		}
-
-		h2 {
-			font-size: 16px;
-			text-align: center;
-			padding: 0 0 12px 0;
-		}
-
-		#container {
-			box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.5);
-			position: relative;
-			background: white;
-		}
-
-		table {
-			background-color: #F3F3F3;
-			border-collapse: collapse;
-			width: 100%;
-			margin: 15px 0;
-		}
-
-		th {
-			background-color: #4444ff;
-			color: #FFF;
-			cursor: pointer;
-			padding: 5px 10px;
-			text-align: left;
-		}
-
-		th small {
-			font-size: 9px;
-		}
-
-		.right {
-			text-align: right;
-		}
-
-		a {
-			text-decoration: none;
-		}
-
-		td {
-			padding-right: 8px;
-		}
-
-		td a {
-			color: #663300;
-			display: block;
-			padding: 5px 10px;
-		}
-
-		th a {
-			padding-left: 0
-		}
-
-		td:first-of-type a {
-			padding-left: 35px;
-		}
-
-		th:first-of-type {
-			padding-left: 35px;
-		}
-
-		td:not(:first-of-type) a {
-			background-image: none !important;
-		}
-
-		tr:nth-of-type(odd) {
-			background-color: #E6E6E6;
-		}
-
-		tr:hover td {
-			background-color: #CACACA;
-		}
-
-		tr:hover td a {
-			color: #000;
-		}
-	</style>
-</head>
-
-<body>
-	<div id="container">
-		<h1>Directory Contents</h1>
-
-		<table class="sortable">
-			<thead>
-				<tr>
-					<th>Filename</th>
-					<th>Type</th>
-					<th>Size</th>
-					<th>Last update</th>
-					<th>Contents</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><a href='../' class='name'>..</a></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				$rows
-			</tbody>
-		</table>
-	</div>
-	<ul>
-		<li>Single JSON containing all <a href="/MBTiles_metadata.json">MBTiles_metadata.json</a></li>
-	</ul>
-</body>
-
+  <body style="margin: 16px">
+    <div id="container">
+      <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <thead>
+          <tr>
+            <th class="mdl-data-table__cell--non-numeric">Filename</th>
+            <th class="mdl-data-table__cell--non-numeric">Type</th>
+            <th>Size</th>
+            <th class="mdl-data-table__cell--non-numeric">Last update</th>
+            <th class="mdl-data-table__cell--non-numeric">Decode as</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="../" class="name">..</a></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          $rows
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li>
+        Single JSON containing all
+        <a href="/MBTiles_metadata.json">MBTiles_metadata.json</a>
+      </li>
+    </ul>
+  </body>
 </html>

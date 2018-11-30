@@ -15,11 +15,11 @@ function htmlRow(
   const url = path.join(baseUrl, filename);
   Object.keys(alternateFormats).forEach(key => {
     const altUrl = path.join(baseUrl, alternateFormats[key]);
-    extra += `<a href="${altUrl}">${key}</a>`;
+    extra += `<a href="${altUrl}">${key}</a>&nbsp;`;
   });
   return `<tr><td><a href="${url}">${name}</a></td><td>${ext ||
     "Directory"}</td><td class="right">${size}</td><td>${modified &&
-    modified.toISOString()}</td><td style="display: flex">${extra}</td></tr>`;
+    modified.toISOString()}</td><td>${extra}</td></tr>`;
 }
 
 function browse(files, relativePath) {

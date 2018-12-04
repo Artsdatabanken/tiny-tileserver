@@ -2,6 +2,7 @@
 
 exports[`get pbf 1`] = `
 Object {
+  "canBrowse": true,
   "files": Object {
     "0": Object {
       "fileext": "zoom",
@@ -34,6 +35,5 @@ Object {
       "name": "4",
     },
   },
-  "canBrowse": true,
 }
 `;

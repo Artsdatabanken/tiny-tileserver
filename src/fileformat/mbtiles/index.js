@@ -81,11 +81,6 @@ class Index {
 
   makeFormat(buffer, ext, format, z, x, y) {
     switch (ext) {
-      case "pbf":
-        return {
-          contentType: format.contentType,
-          buffer: buffer
-        };
       case "pbfjson":
         return {
           contentType: "application/json",
@@ -102,7 +97,11 @@ class Index {
           buffer: toGeoJson(x, y, z, buffer)
         };
       default:
-        return null;
+        if (!format) throw new Error("Unknown format: " + ext);
+        return {
+          contentType: format.contentType,
+          buffer: buffer
+        };
     }
   }
 }

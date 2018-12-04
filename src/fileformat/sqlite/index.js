@@ -27,12 +27,12 @@ function list(type, items, baseUrl) {
       link: f1
     };
   });
-  return { type: "directory", files: toObject(files) };
+  return { canBrowse: true, files: toObject(files) };
 }
 
 class SqliteHandler {
   indexContents(filepath, meta) {
-    meta.type = "directory";
+    meta.canBrowse = true;
     reader
       .listTables(filepath)
       .then(tables => {

@@ -5,27 +5,10 @@ const getFormat = require("./tileformat");
 const { toObject } = require("../../object");
 const fs = require("fs");
 
-function list(type, fileext, items, baseUrl) {
-  const files = items.map(item => {
-    const f1 = Object.values(item)[0].toString();
-    const r = {
-      filesize: item.size,
-      fileext: type,
-      name: f1 + fileext,
-      link: f1
-    };
-    if (fileext === ".pbf")
-      r.alternateFormats = {
-        geojson: f1 + ".geojson",
-        pbfjson: f1 + ".pbfjson"
-      };
-    return r;
-  });
-  return { type: "directory", files: toObject(files) };
-}
-
-class MbTilesHandler {
+class Index {
   indexContents(filepath, meta) {
+    meta.canBrowse = true;
+
     readMetadata(filepath)
       .then(mbmeta => {
         if (mbmeta.error) {
@@ -39,6 +22,25 @@ class MbTilesHandler {
       .catch(error => (meta.error = error));
   }
 
+  list(type, fileext, items, baseUrl) {
+    const files = items.map(item => {
+      const f1 = Object.values(item)[0].toString();
+      const r = {
+        filesize: item.size,
+        fileext: type,
+        name: f1 + fileext,
+        link: f1
+      };
+      if (fileext === ".pbf")
+        r.alternateFormats = {
+          geojson: f1 + ".geojson",
+          pbfjson: f1 + ".pbfjson"
+        };
+      return r;
+    });
+    return { canBrowse: true, files: toObject(files) };
+  }
+
   async get(node, fragment, ext) {
     ext = ext || ".pbf";
     const path = node.filepath;
@@ -47,12 +49,13 @@ class MbTilesHandler {
       case 1:
       case 2:
         const raw = await listFiles(path, fragment);
-        return await list(
+        const r = await this.list(
           ["zoom", "column", "row"][fragment.length],
           ["", "", "." + node.content.format][fragment.length],
           raw,
           node.link
         );
+        return r;
       case 3:
         const format = getFormat(node.content.format);
         const buffer = await readTile(path, ...fragment);
@@ -78,18 +81,22 @@ class MbTilesHandler {
 
   makeFormat(buffer, ext, format, z, x, y) {
     switch (ext) {
-      case ".pbf":
+      case "pbf":
         return {
           contentType: format.contentType,
           buffer: buffer
         };
-      case ".pbfjson":
+      case "pbfjson":
         return {
           contentType: "application/json",
           buffer: decodePbf(buffer)
         };
-      case ".json":
-      case ".geojson":
+      case "json":
+        return {
+          contentType: "application/json",
+          buffer: toGeoJson(x, y, z, buffer)
+        };
+      case "geojson":
         return {
           contentType: "application/json",
           buffer: toGeoJson(x, y, z, buffer)
@@ -100,4 +107,4 @@ class MbTilesHandler {
   }
 }
 
-module.exports = MbTilesHandler;
+module.exports = Index;

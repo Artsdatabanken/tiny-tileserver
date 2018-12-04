@@ -8,7 +8,7 @@ function safe(arg) {
   return arg.replace(/[^0-9a-z_%\-]/gi, "");
 }
 
-function dball(file, sql, args) {
+function dball(file, sql, args = []) {
   log.info("Open " + file);
   log.debug("SQL   : " + sql);
   log.debug("  args: " + args);

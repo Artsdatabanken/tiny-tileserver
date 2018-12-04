@@ -12,6 +12,7 @@ const formats = {
 };
 
 function getHandler(type) {
+  if (!type) return formats["directory"];
   const handler = formats[type];
   if (!handler) throw new Error("No handler for type " + type);
   return handler;

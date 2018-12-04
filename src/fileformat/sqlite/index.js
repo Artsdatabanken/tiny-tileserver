@@ -10,9 +10,10 @@ async function mapTables(tables, filepath, baseUri) {
         link: table.name,
         filepath: filepath
       };
-      reader
-        .getColumns(filepath, table.name)
-        .then(fields => (file.columns = fields));
+      const columns = reader.getColumns(filepath, table.name).then(fields => {
+        file.columns = fields;
+        console.log(file);
+      });
       return file;
     })
   );
@@ -46,16 +47,26 @@ class SqliteHandler {
 
   async get(node, fragment) {
     const path = node.filepath;
+    if (fragment.length <= 0) return node;
+    if (node.files) {
+      const table = fragment.shift();
+      node = node.files[table];
+      if (!node) return null;
+      return this.getContent(node, fragment);
+    }
+  }
+
+  async getContent(node, fragment) {
     switch (fragment.length) {
       case 0:
         return list(
           "sqlite",
-          await reader.listRows(path, node.name, node.columns),
+          await reader.listRows(node.filepath, node.name, node.columns),
           node.link
         );
       case 1:
         const buffer = await reader.read(
-          path,
+          node.filepath,
           node.name,
           fragment,
           node.columns

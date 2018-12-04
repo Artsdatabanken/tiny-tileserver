@@ -2,42 +2,53 @@ const fs = require("fs");
 const template = fs.readFileSync("index.html", "utf8");
 var path = require("path");
 
+function td(inner) {
+  return `<td class="mdl-data-table__cell--non-numeric">${inner}</td>`;
+}
+
 function htmlRow(
   name,
   baseUrl,
   filename,
-  ext = "",
   size = "",
   modified = "",
   alternateFormats = {},
-  extra = ""
+  extra = "",
+  canBrowse
 ) {
-  const url = path.join(baseUrl, filename);
+  const url = path.join(baseUrl, name);
   Object.keys(alternateFormats).forEach(key => {
     const altUrl = path.join(baseUrl, alternateFormats[key]);
     extra += `<a href="${altUrl}">${key}</a>&nbsp;`;
   });
-  return `<tr><td><a href="${url}">${name}</a></td><td>${ext ||
-    "Directory"}</td><td class="right">${size}</td><td>${modified &&
-    modified.toISOString()}</td><td>${extra}</td></tr>`;
+  const browse = canBrowse ? "/" : "";
+  const mainlink = `<a href="${url}${browse}">${name}</a>`;
+  const download = `<a href="${url}"><img src="/download.png"></a>`;
+  return `<tr onClick="window.location='${url}'">
+    ${td(mainlink)}
+    ${td(download)}
+    <td>${size}</td>
+    ${td(modified && modified.toISOString())}
+    ${td(extra)}
+  </tr>`;
 }
 
 function browse(files, relativePath) {
   const htmlFragment = Object.keys(files)
     .map(key => {
       const item = files[key];
-      const mbtiles = item.mbtiles;
+      const mbtiles = item.format;
       return htmlRow(
         item.name,
         relativePath,
         item.link,
-        item.fileext,
         item.filesize,
         item.filemodified,
         item.alternateFormats,
         mbtiles
           ? `${mbtiles.format}, zoom ${mbtiles.minzoom} - ${mbtiles.maxzoom}`
-          : ""
+          : "",
+        item.canBrowse
       );
     })
     .join("\n");

@@ -11,12 +11,12 @@ module.exports = function(app, rootDirectory, index) {
   app.get("*?", (req, res, next) => {
     const query = req.params[0] || "";
     const parsed = path.parse(query);
-    const relPath = path.join(parsed.dir, parsed.name);
+    const relPath = query; // path.join(parsed.dir, parsed.name);
     index
-      .get(relPath, parsed.ext)
+      .get(query)
       .then(node => {
         if (!node) return next();
-        if (node.type === "directory") node = browse(node.files, relPath);
+        if (node.canBrowse) node = browse(node.files, relPath);
         res.setHeader("Content-Type", node.contentType);
         if (!node.buffer) {
           return res.sendFile(node.file, {

@@ -1,5 +1,5 @@
 function jsonSummarySubtree(node, path, target) {
-  if (node.type === "directory") {
+  if (node.canBrowse) {
     Object.keys(node.files).forEach(file =>
       jsonSummarySubtree(node.files[file], path + "/" + file, target)
     );

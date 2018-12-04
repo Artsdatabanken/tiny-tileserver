@@ -9,7 +9,7 @@ const walkSync = (dir, filelist = {}, mapFile) =>
       fs.statSync(path.join(dir, file)).isDirectory()
         ? {
             name: file,
-            type: "directory",
+            canBrowse: true,
             link: file,
             files: walkSync(path.join(dir, file), filelist, mapFile)
           }
@@ -23,19 +23,15 @@ function mapFile(dir, file) {
   const parsed = path.parse(file);
   const stat = fs.statSync(filepath);
   const meta = {
-    name: parsed.name,
-    link: parsed.base.replace(".mbtiles", "").replace(".sqlite", ""),
+    name: parsed.base,
+    link: parsed.base,
     type: fileformat.getTypeFromFileExt(ext.substring(1)),
     fileext: parsed.ext,
     filepath: filepath,
     filesize: stat.size,
+    canBrowse: stat.isDirectory(),
     filemodified: stat.mtime
   };
-  if (meta.type === "mbtiles") {
-    meta.alternateFormats = {
-      mbtiles: parsed.base
-    };
-  }
   fileformat.indexContents(meta.type, filepath, meta);
   return meta;
 }
@@ -45,32 +41,40 @@ class Index {
     this.index = index;
   }
 
-  async get(relativePath, ext) {
-    return new Promise((resolve, reject) => {
-      this.get2(relativePath, ext).then(node => {
-        resolve(node);
-      });
-    });
-  }
-
-  async get2(relativePath, ext) {
+  async get(relativePath) {
     if (!relativePath) return null;
-    const parts = relativePath.replace(/\/$/, "").split("/");
+    const parts = relativePath.split("/");
+    while (parts.length > 0 && parts[0] == "") parts.shift();
     let node = this.index;
     while (true) {
       if (parts.length === 0) return node;
       const part = parts.shift();
-      node = await fileformat.get(node, part);
+      node = await fileformat.get(node, [part]);
       if (!node) return null;
-      if (node.type !== "directory") break;
+      if (node.type) break;
     }
-    return await fileformat.get(node, parts, ext);
+
+    if (parts[parts.length - 1] === "") parts.pop();
+    const query = evictFileExtension(parts);
+    return await fileformat.get(node, query.fragments, query.extension);
   }
+}
+
+// Move any file extension into a separate element
+function evictFileExtension(parts) {
+  const r = { fragments: [], extension: "" };
+  if (parts.length < 1) return r;
+  const fragments = [...parts];
+  const final = fragments.pop();
+  const [name, ext] = final.split(".");
+  r.fragments = fragments.concat(name);
+  r.extension = ext;
+  return r;
 }
 
 function index(rootDirectory) {
   const index = walkSync(rootDirectory, {}, mapFile);
-  return new Index({ type: "directory", files: index });
+  return new Index({ canBrowse: true, files: index });
 }
 
 module.exports = index;

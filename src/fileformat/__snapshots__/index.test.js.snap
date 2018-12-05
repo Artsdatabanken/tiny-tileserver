@@ -123,34 +123,32 @@ Object {
   "canBrowse": true,
   "files": Object {
     "0": Object {
-      "fileext": "zoom",
       "filesize": undefined,
       "link": "0",
       "name": "0",
     },
     "1": Object {
-      "fileext": "zoom",
       "filesize": undefined,
       "link": "1",
       "name": "1",
     },
     "2": Object {
-      "fileext": "zoom",
       "filesize": undefined,
       "link": "2",
       "name": "2",
     },
     "3": Object {
-      "fileext": "zoom",
       "filesize": undefined,
       "link": "3",
       "name": "3",
     },
     "4": Object {
-      "fileext": "zoom",
       "filesize": undefined,
       "link": "4",
       "name": "4",
+    },
+    "tilejson.json": Object {
+      "name": "tilejson.json",
     },
   },
 }
@@ -161,7 +159,6 @@ Object {
   "canBrowse": true,
   "files": Object {
     "4": Object {
-      "fileext": "column",
       "filesize": undefined,
       "link": "4",
       "name": "4",
@@ -179,7 +176,6 @@ Object {
         "geojson": "2.geojson",
         "pbfjson": "2.pbfjson",
       },
-      "fileext": "row",
       "filesize": 107,
       "link": "2",
       "name": "2.pbf",

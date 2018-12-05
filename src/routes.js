@@ -11,7 +11,7 @@ module.exports = function(app, rootDirectory, index) {
   app.get("*?", (req, res, next) => {
     const query = req.params[0] || "";
     const parsed = path.parse(query);
-    const relPath = query; // path.join(parsed.dir, parsed.name);
+    const relPath = query;
     index
       .get(query)
       .then(node => {

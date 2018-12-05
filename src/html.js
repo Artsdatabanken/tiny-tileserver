@@ -39,7 +39,7 @@ function browse(files, relativePath) {
       const item = files[key];
       const mbtiles = item.format;
       return htmlRow(
-        item.name,
+        key,
         relativePath,
         item.link,
         item.filesize,

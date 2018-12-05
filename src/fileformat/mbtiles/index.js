@@ -4,6 +4,7 @@ const { decodePbf } = require("./pbf/pbf_dump");
 const getFormat = require("./tileformat");
 const { toObject } = require("../../object");
 const fs = require("fs");
+const tilejson = require("./tilejson");
 
 class Index {
   indexContents(filepath, meta) {
@@ -22,12 +23,11 @@ class Index {
       .catch(error => (meta.error = error));
   }
 
-  list(type, fileext, items, baseUrl) {
+  list(level, fileext, items, baseUrl) {
     const files = items.map(item => {
       const f1 = Object.values(item)[0].toString();
       const r = {
         filesize: item.size,
-        fileext: type,
         name: f1 + fileext,
         link: f1
       };
@@ -38,10 +38,15 @@ class Index {
         };
       return r;
     });
+    if (level == "zoom")
+      files.push({
+        name: "tilejson.json"
+      });
     return { canBrowse: true, files: toObject(files) };
   }
 
   async get(node, fragment, ext) {
+    if (fragment.join("/") === "tilejson") return tilejson(node);
     ext = ext || ".pbf";
     const path = node.filepath;
     switch (fragment.length) {
@@ -68,15 +73,6 @@ class Index {
         const [z, x, y] = fragment;
         return this.makeFormat(buffer, ext, format, z, x, y);
     }
-  }
-
-  async readFile(path) {
-    return new Promise((resolve, reject) =>
-      fs.readFile(path, (err, data) => {
-        if (err) reject(err);
-        resolve(data);
-      })
-    );
   }
 
   makeFormat(buffer, ext, format, z, x, y) {

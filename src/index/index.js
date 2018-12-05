@@ -74,6 +74,7 @@ function evictFileExtension(parts) {
 
 function index(rootDirectory) {
   const index = walkSync(rootDirectory, {}, mapFile);
+  index["MBTiles_metadata.json"] = {};
   return new Index({ canBrowse: true, files: index });
 }
 

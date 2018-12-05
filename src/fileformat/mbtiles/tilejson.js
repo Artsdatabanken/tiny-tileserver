@@ -1,4 +1,5 @@
 const getFormat = require("./tileformat");
+const config = require("../../config");
 
 const template = {
   bounds: [0, 0, 180, 85.051129],
@@ -7,7 +8,7 @@ const template = {
   version: "1.1",
   attribution: "Artsdatabanken",
   tilejson: "2.0.0",
-  tiles: ["http://localhost:8000/AO.mbtiles/{z}/{x}/{y}"],
+  tiles: ["http://abc/AO.mbtiles/{z}/{x}/{y}"],
   vector_layers: [
     {
       id: "AO",
@@ -21,7 +22,7 @@ function tilejson(node) {
   const meta = node.content;
   tj.minzoom = parseInt(meta.minzoom);
   tj.maxzoom = parseInt(meta.maxzoom);
-  tj.tiles = [`http://localhost:8000/${node.name}/{z}/{x}/{y}`];
+  tj.tiles = [config.baseUrl + `/${node.name}/{z}/{x}/{y}`];
   meta.vector_layers = [
     { id: node.name.replace(".mbtiles", ""), description: "-" }
   ];

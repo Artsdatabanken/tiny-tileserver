@@ -22,9 +22,9 @@ function htmlRow(
     extra += `<a href="${altUrl}">${key}</a>&nbsp;`;
   });
   const browse = canBrowse ? "/" : "";
-  const mainlink = `<a href="${url}${browse}">${name}</a>`;
-  const download = `<a href="${url}"><img src="/download.png"></a>`;
-  return `<tr onClick="window.location='${url}'">
+  const mainlink = `<a alt="Browse" href="${url}${browse}">${name}</a>`;
+  const download = `<a alt="Download" href="${url}"><img src="/download.png"></a>`;
+  return `<tr onClick="window.location='${url}${browse}'">
     ${td(mainlink)}
     ${td(download)}
     <td>${size}</td>

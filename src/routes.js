@@ -1,25 +1,17 @@
 const { browse } = require("./html");
 const { getCompression } = require("./fileformat/mbtiles/pbf/protobuf");
 const path = require("path");
-const { jsonSummary } = require("./jsonsummary");
 
-module.exports = function(app, rootDirectory, index) {
-  app.get("/MBTiles_metadata.json", (req, res) => {
-    res.json(jsonSummary(index.index));
-  });
-
+module.exports = function(app, index) {
   app.get("*?", (req, res, next) => {
-    const query = req.params[0] || "";
-    const parsed = path.parse(query);
-    const relPath = query;
     index
-      .get(query)
+      .get(req.path, req.query)
       .then(node => {
         if (!node) return next();
-        if (node.canBrowse) node = browse(node.files, relPath);
+        if (node.canBrowse) node = browse(node.files, req.path);
         res.setHeader("Content-Type", node.contentType);
         if (!node.buffer) {
-          return res.sendFile(node.file, {
+          return res.sendFile(node.physicalDir, {
             root: __dirname
           });
         }

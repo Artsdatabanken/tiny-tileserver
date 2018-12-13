@@ -1,5 +1,6 @@
 const getFormat = require("./tileformat");
 const config = require("../../config");
+const { readMetadata } = require("./mbtileReader");
 
 const template = {
   bounds: [0, 0, 180, 85.051129],
@@ -17,20 +18,18 @@ const template = {
   ]
 };
 
-function tilejson(node) {
+async function tilejson(cursor) {
+  const meta = await readMetadata(cursor.physicalDir);
   const tj = JSON.parse(JSON.stringify(template));
-  const meta = node.content;
   tj.minzoom = parseInt(meta.minzoom);
   tj.maxzoom = parseInt(meta.maxzoom);
-  tj.tiles = [config.baseUrl + `/${node.name}/{z}/{x}/{y}`];
-  meta.vector_layers = [
-    { id: node.name.replace(".mbtiles", ""), description: "-" }
+  tj.tiles = [config.baseUrl + `${cursor.fileRelPath}/{z}/{x}/{y}`];
+  tj.vector_layers = [
+    { id: cursor.name.replace(".mbtiles", ""), description: "-" }
   ];
   tj.bounds = meta.bounds.split(",").map(b => parseFloat(b));
-  return {
-    buffer: Buffer.from(JSON.stringify(tj)),
-    contentType: "application/json"
-  };
+  cursor.buffer = tj;
+  cursor.contentType = "application/json";
 }
 
 module.exports = tilejson;

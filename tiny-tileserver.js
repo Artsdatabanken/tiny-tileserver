@@ -3,7 +3,7 @@ const express = require("express");
 const log = require("log-less-fancy")();
 const minimist = require("minimist");
 const routes = require("./src/routes");
-const indexer = require("./src/index/index");
+const Index = require("./src/index/index");
 const pjson = require("./package.json");
 
 var argv = minimist(process.argv.slice(2), { alias: { p: "port" } });
@@ -41,12 +41,13 @@ app.use(function(req, res, next) {
 const port = argv.port || 8000;
 const rootDirectory = path.resolve(argv._[0] || ".");
 const staticDirs = ["static", rootDirectory];
+const oneDay = 86400000;
 staticDirs.forEach(dir =>
-  app.use(express.static(dir, { maxAge: 86400000, immutable: true }))
+  app.use(express.static(dir, { maxAge: oneDay, immutable: true }))
 );
 
-const index = indexer(rootDirectory);
-routes(app, rootDirectory, index);
+const index = new Index(rootDirectory);
+routes(app, index);
 
 app.listen(port, () => {
   log.info("Server root directory " + rootDirectory);

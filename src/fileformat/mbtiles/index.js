@@ -1,40 +1,24 @@
 const { readTile, readMetadata, listFiles } = require("./mbtileReader");
 const { toGeoJson, getCompression } = require("./pbf/protobuf");
 const { decodePbf } = require("./pbf/pbf_dump");
-const getFormat = require("./tileformat");
 const { toObject } = require("../../object");
 const fs = require("fs");
 const tilejson = require("./tilejson");
+const mbtilesFormats = require("./mbtilesFormats");
 
 class Index {
-  indexContents(filepath, meta) {
-    meta.canBrowse = true;
-
-    readMetadata(filepath)
-      .then(mbmeta => {
-        if (mbmeta.error) {
-          log.warn(file + ": " + mbmeta.error.message);
-          meta.error = mbmeta.error.message;
-        }
-
-        delete mbmeta.json;
-        meta.content = mbmeta;
-      })
-      .catch(error => (meta.error = error));
-  }
-
-  list(level, fileext, items, baseUrl) {
+  list(cursor, level, fileext, items) {
     const files = items.map(item => {
       const f1 = Object.values(item)[0].toString();
       const r = {
         filesize: item.size,
-        name: f1 + fileext,
+        name: f1,
         link: f1
       };
-      if (fileext === ".pbf")
+      if (fileext === "pbf")
         r.alternateFormats = {
-          geojson: f1 + ".geojson",
-          pbfjson: f1 + ".pbfjson"
+          geojson: f1 + "?geojson",
+          pbfjson: f1 + "?pbfjson"
         };
       return r;
     });
@@ -42,40 +26,45 @@ class Index {
       files.push({
         name: "tilejson.json"
       });
-    return { canBrowse: true, files: toObject(files) };
+    cursor.canBrowse = true;
+    cursor.files = files;
   }
 
-  async get(node, fragment, ext) {
-    if (fragment.join("/") === "tilejson") return tilejson(node);
-    ext = ext || ".pbf";
-    const path = node.filepath;
+  async load(cursor) {
+    const fragment = cursor.pathSegments;
+    if (fragment.join("/") === "tilejson.json") return tilejson(cursor);
+    const path = cursor.physicalDir;
+    const format = await mbtilesFormats.getContentDescription(
+      cursor.physicalDir
+    );
     switch (fragment.length) {
       case 0:
       case 1:
       case 2:
         const raw = await listFiles(path, fragment);
-        const r = await this.list(
+        await this.list(
+          cursor,
           ["zoom", "column", "row"][fragment.length],
-          ["", "", "." + node.content.format][fragment.length],
-          raw,
-          node.link
+          ["", "", format.extension][fragment.length],
+          raw
         );
-        return r;
+        break;
       case 3:
-        const format = getFormat(node.content.format);
         const buffer = await readTile(path, ...fragment);
-        if (!buffer)
-          return {
-            buffer: format.emptyFile,
-            contentType: format.contentType
-          };
-
+        if (!buffer) {
+          cursor.buffer = format.emptyFile;
+          cursor.contentType = format.contentType;
+          return;
+        }
         const [z, x, y] = fragment;
-        return this.makeFormat(buffer, ext, format, z, x, y);
+        const response = this.makeFormat(buffer, cursor.query, format, z, x, y);
+        cursor.contentType = response.contentType;
+        cursor.buffer = response.buffer;
     }
   }
 
-  makeFormat(buffer, ext, format, z, x, y) {
+  makeFormat(buffer, query, format, z, x, y) {
+    const ext = Object.keys(query)[0];
     switch (ext) {
       case "pbfjson":
         return {

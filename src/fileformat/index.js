@@ -23,9 +23,14 @@ function indexContents(type, path, meta) {
   return handler.indexContents(path, meta);
 }
 
-async function get(node, fragment, ext) {
-  const handler = getHandler(node.type);
-  return await handler.get(node, fragment, ext);
+async function load(cursor, fragment) {
+  const handler = getHandler(cursor.type);
+  return await handler.load(cursor, fragment);
+}
+
+async function navigate(cursor) {
+  const handler = getHandler(cursor.type);
+  return await handler.navigate(cursor);
 }
 
 function getTypeFromFileExt(ext) {
@@ -33,4 +38,4 @@ function getTypeFromFileExt(ext) {
   return "file";
 }
 
-module.exports = { get, indexContents, getTypeFromFileExt };
+module.exports = { load, navigate, getTypeFromFileExt };

@@ -34,16 +34,15 @@ function htmlRow(
 }
 
 function browse(files, relativePath) {
-  const htmlFragment = Object.keys(files)
-    .map(key => {
-      const item = files[key];
+  const htmlFragment = files
+    .map(item => {
       const mbtiles = item.format;
       return htmlRow(
-        key,
+        item.name,
         relativePath,
         item.link,
-        item.filesize,
-        item.filemodified,
+        item.size,
+        item.modified,
         item.alternateFormats,
         mbtiles
           ? `${mbtiles.format}, zoom ${mbtiles.minzoom} - ${mbtiles.maxzoom}`

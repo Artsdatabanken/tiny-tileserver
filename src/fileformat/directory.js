@@ -17,12 +17,19 @@ class DirectoryHandler {
       const fullPath = path.join(cursor.physicalDir, file);
       const ext = path.parse(fullPath).ext;
       const stat = fs.statSync(fullPath);
-      return {
+      const record = {
         name: file,
         modified: stat.mtime,
         size: stat.size,
-        canBrowse: ext === ".mbtiles"
+        canBrowse: ext && ".sqlite.mbtiles".indexOf(ext) >= 0
       };
+      if (stat.nlink > 0) record.type = "directory";
+      if (ext === ".mbtiles") {
+        record.alternateFormats = {
+          tilejson: file + "?tilejson"
+        };
+      }
+      return record;
     });
     cursor.files = entries;
     cursor.canBrowse = true;

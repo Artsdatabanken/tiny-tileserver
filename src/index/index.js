@@ -1,26 +1,6 @@
 const fs = require("fs");
 var path = require("path");
 const fileformat = require("../fileformat");
-const { toObject } = require("../object");
-
-function mapFile(dir, file) {
-  const ext = path.extname(file).toLowerCase();
-  const filepath = path.join(dir, file);
-  const parsed = path.parse(file);
-  const stat = fs.statSync(filepath);
-  const meta = {
-    name: parsed.base,
-    link: parsed.base,
-    type: fileformat.getTypeFromFileExt(ext.substring(1)),
-    fileext: parsed.ext,
-    filepath: filepath,
-    filesize: stat.size,
-    canBrowse: stat.isDirectory(),
-    filemodified: stat.mtime
-  };
-  fileformat.indexContents(meta.type, filepath, meta);
-  return meta;
-}
 
 class Index {
   constructor(rootDir) {
@@ -32,6 +12,7 @@ class Index {
       physicalDir: this.rootDir,
       fileRelPath: "",
       pathSegments: this.parsePath(path),
+      type: "directory",
       query: query
     };
     while (cursor.pathSegments.length > 0) {

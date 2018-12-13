@@ -1,37 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`get pbf 1`] = `
-Object {
-  "canBrowse": true,
-  "files": Object {
-    "0": Object {
-      "filesize": undefined,
-      "link": "0",
-      "name": "0",
-    },
-    "1": Object {
-      "filesize": undefined,
-      "link": "1",
-      "name": "1",
-    },
-    "2": Object {
-      "filesize": undefined,
-      "link": "2",
-      "name": "2",
-    },
-    "3": Object {
-      "filesize": undefined,
-      "link": "3",
-      "name": "3",
-    },
-    "4": Object {
-      "filesize": undefined,
-      "link": "4",
-      "name": "4",
-    },
-    "tilejson.json": Object {
-      "name": "tilejson.json",
-    },
-  },
-}
-`;
+exports[`get pbf 1`] = `undefined`;

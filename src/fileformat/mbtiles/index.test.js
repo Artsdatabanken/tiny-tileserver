@@ -3,15 +3,14 @@ const MbTilesHandler = require("./");
 const mbtiles = new MbTilesHandler();
 
 test("get pbf", async () => {
-  const node = {
+  const cursor = {
     type: "mbtiles",
     content: { format: "pbf" },
-    filepath: "./testdata/pbf.mbtiles",
+    physicalDir: "./testdata/pbf.mbtiles",
+    pathSegments: [],
     link: ""
   };
   const fragment = [];
   const ext = "";
-  await mbtiles
-    .get(node, fragment, ext)
-    .then(value => expect(value).toMatchSnapshot());
+  await mbtiles.load(cursor).then(value => expect(value).toMatchSnapshot());
 });

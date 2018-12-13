@@ -31,32 +31,32 @@ class Index {
   }
 
   async load(cursor) {
-    const fragment = cursor.pathSegments;
-    if (fragment.join("/") === "tilejson.json") return tilejson(cursor);
+    const segments = cursor.pathSegments;
+    if (segments.join("/") === "tilejson.json") return tilejson(cursor);
     const path = cursor.physicalDir;
     const format = await mbtilesFormats.getContentDescription(
       cursor.physicalDir
     );
-    switch (fragment.length) {
+    switch (segments.length) {
       case 0:
       case 1:
       case 2:
-        const raw = await listFiles(path, fragment);
+        const raw = await listFiles(path, segments);
         await this.list(
           cursor,
-          ["zoom", "column", "row"][fragment.length],
-          ["", "", format.extension][fragment.length],
+          ["zoom", "column", "row"][segments.length],
+          ["", "", format.extension][segments.length],
           raw
         );
         break;
       case 3:
-        const buffer = await readTile(path, ...fragment);
+        const buffer = await readTile(path, ...segments);
         if (!buffer) {
           cursor.buffer = format.emptyFile;
           cursor.contentType = format.contentType;
           return;
         }
-        const [z, x, y] = fragment;
+        const [z, x, y] = segments;
         const response = this.makeFormat(buffer, cursor.query, format, z, x, y);
         cursor.contentType = response.contentType;
         cursor.buffer = response.buffer;

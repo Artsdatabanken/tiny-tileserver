@@ -114,73 +114,114 @@ Object {
     ],
     "type": "Buffer",
   },
+  "content": Object {
+    "format": "pbf",
+  },
   "contentType": "application/x-protobuf",
+  "link": "",
+  "pathSegments": Array [
+    3,
+    4,
+    2,
+  ],
+  "physicalDir": "./testdata/pbf.mbtiles",
+  "query": Object {},
+  "type": "mbtiles",
 }
 `;
 
 exports[`get z 1`] = `
 Object {
   "canBrowse": true,
-  "files": Object {
-    "0": Object {
+  "content": Object {
+    "format": "pbf",
+  },
+  "files": Array [
+    Object {
       "filesize": undefined,
       "link": "0",
       "name": "0",
     },
-    "1": Object {
+    Object {
       "filesize": undefined,
       "link": "1",
       "name": "1",
     },
-    "2": Object {
+    Object {
       "filesize": undefined,
       "link": "2",
       "name": "2",
     },
-    "3": Object {
+    Object {
       "filesize": undefined,
       "link": "3",
       "name": "3",
     },
-    "4": Object {
+    Object {
       "filesize": undefined,
       "link": "4",
       "name": "4",
     },
-    "tilejson.json": Object {
+    Object {
       "name": "tilejson.json",
     },
-  },
+  ],
+  "link": "",
+  "pathSegments": Array [],
+  "physicalDir": "./testdata/pbf.mbtiles",
+  "query": Object {},
+  "type": "mbtiles",
 }
 `;
 
 exports[`get zx 1`] = `
 Object {
   "canBrowse": true,
-  "files": Object {
-    "4": Object {
+  "content": Object {
+    "format": "pbf",
+  },
+  "files": Array [
+    Object {
       "filesize": undefined,
       "link": "4",
       "name": "4",
     },
-  },
+  ],
+  "link": "",
+  "pathSegments": Array [
+    3,
+  ],
+  "physicalDir": "./testdata/pbf.mbtiles",
+  "query": Object {},
+  "type": "mbtiles",
 }
 `;
 
 exports[`get zxy 1`] = `
 Object {
   "canBrowse": true,
-  "files": Object {
-    "2.pbf": Object {
+  "content": Object {
+    "format": "pbf",
+  },
+  "files": Array [
+    Object {
       "alternateFormats": Object {
-        "geojson": "2.geojson",
-        "pbfjson": "2.pbfjson",
+        "geojson": "2?geojson",
+        "pbfjson": "2?pbfjson",
       },
       "filesize": 107,
       "link": "2",
-      "name": "2.pbf",
+      "name": "2",
     },
-  },
+  ],
+  "link": "",
+  "pathSegments": Array [
+    3,
+    4,
+  ],
+  "physicalDir": "./testdata/pbf.mbtiles",
+  "query": Object {},
+  "type": "mbtiles",
 }
 `;
 

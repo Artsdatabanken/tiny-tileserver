@@ -11,16 +11,16 @@ Array [
 exports[`listRows 1`] = `
 Array [
   Object {
-    "col2": "a",
-    "col3": "abc",
+    "name": "a",
+    "size": 3,
   },
   Object {
-    "col2": "b",
-    "col3": "",
+    "name": "b",
+    "size": 0,
   },
   Object {
-    "col2": "",
-    "col3": null,
+    "name": "",
+    "size": null,
   },
 ]
 `;

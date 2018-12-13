@@ -33,8 +33,8 @@ function htmlRow(
   </tr>`;
 }
 
-function browse(files, relativePath) {
-  const htmlFragment = files
+function browse(node, relativePath) {
+  const htmlFragment = node.files
     .map(item => {
       const mbtiles = item.format;
       return htmlRow(
@@ -51,10 +51,8 @@ function browse(files, relativePath) {
       );
     })
     .join("\n");
-  const node = {
-    contentType: "text/html",
-    buffer: template.replace("$rows", htmlFragment)
-  };
+  node.contentType = "text/html";
+  node.buffer = template.replace("$rows", htmlFragment);
   return node;
 }
 

@@ -15,11 +15,14 @@ class Index {
         name: f1,
         link: f1
       };
-      if (fileext === "pbf")
-        r.alternateFormats = {
-          geojson: f1 + "?geojson",
-          pbfjson: f1 + "?pbfjson"
-        };
+      switch (fileext) {
+        case "pbf":
+          r.alternateFormats = {
+            geojson: f1 + "?geojson",
+            pbfjson: f1 + "?pbfjson"
+          };
+          break;
+      }
       return r;
     });
     if (level == "zoom")
@@ -32,7 +35,7 @@ class Index {
 
   async load(cursor) {
     const segments = cursor.pathSegments;
-    if (segments.join("/") === "tilejson.json") return tilejson(cursor);
+    if ("tilejson" in cursor.query) return tilejson(cursor);
     const path = cursor.physicalDir;
     const format = await mbtilesFormats.getContentDescription(
       cursor.physicalDir

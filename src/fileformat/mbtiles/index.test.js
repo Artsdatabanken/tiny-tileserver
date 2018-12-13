@@ -8,6 +8,7 @@ test("get pbf", async () => {
     content: { format: "pbf" },
     physicalDir: "./testdata/pbf.mbtiles",
     pathSegments: [],
+    query: {},
     link: ""
   };
   const fragment = [];

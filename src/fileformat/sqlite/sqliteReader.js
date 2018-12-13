@@ -2,9 +2,12 @@ const log = require("log-less-fancy")();
 const { safe, dball } = require("../../sqlite");
 
 async function listRows(file, table, fields) {
+  const lastField = fields.slice(-1)[0];
   return await dball(
     file,
-    `SELECT ${fields.join(",")} FROM ${safe(table)} LIMIT 100`
+    `SELECT ${fields[0]} AS name, length(${lastField}) AS size FROM ${safe(
+      table
+    )} LIMIT 100`
   );
 }
 

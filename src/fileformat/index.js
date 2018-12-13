@@ -4,6 +4,13 @@ const SqliteHandler = require("./sqlite/");
 const FileHandler = require("./file");
 const DirectoryHandler = require("./directory");
 
+class MissingHandler {
+  load(cursor) {}
+  navigate(cursor) {
+    cursor.final = true;
+  }
+}
+
 const formats = {
   file: new FileHandler(),
   directory: new DirectoryHandler(),
@@ -12,15 +19,9 @@ const formats = {
 };
 
 function getHandler(type) {
-  if (!type) return formats["directory"];
   const handler = formats[type];
-  if (!handler) throw new Error("No handler for type " + type);
+  if (!handler) return new MissingHandler();
   return handler;
-}
-
-function indexContents(type, path, meta) {
-  const handler = getHandler(type);
-  return handler.indexContents(path, meta);
 }
 
 async function load(cursor, fragment) {

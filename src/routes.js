@@ -8,7 +8,8 @@ module.exports = function(app, index) {
       .get(req.path, req.query)
       .then(node => {
         if (!node) return next();
-        if (node.canBrowse) node = browse(node.files, req.path);
+        if (node.canBrowse) browse(node, req.path);
+        if (!node.contentType) return next();
         res.setHeader("Content-Type", node.contentType);
         if (!node.buffer) {
           return res.sendFile(node.physicalDir, {

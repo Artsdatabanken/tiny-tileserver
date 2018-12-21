@@ -3,6 +3,8 @@ language: node_js
 node_js:
   - "10"
 install:
+  - export PKG_CONFIG_PATH="$HOME/lib/pkgconfig/"
+  - pkg-config pixman-1 --libs
   - npm install --build-from-source
 addons:
   apt:

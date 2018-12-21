@@ -2,12 +2,13 @@ sudo: true
 language: node_js
 node_js:
   - "10"
-install:
-  - export PKG_CONFIG_PATH="$HOME/lib/pkgconfig/"
-  - pkg-config pixman-1 --libs
-  - export pixman_CFLAGS="-I$HOME/include/pixman-1"
-  - export pixman_LIBS="-L$HOME/lib/ -lpixman-1"
-  - yarn
+python:
+  - "2.7"
+before_install:
+  - yarn global add greenkeeper-lockfile@1
+  - export PATH=$PATH:`yarn global bin`
+  - docker build --tag artsdatabanken/tiny-tileserver .
+  - docker image ls	-a
 addons:
   apt:
     sources:
@@ -47,11 +48,6 @@ notifications:
   on_success: change
   on_failure: change
   on_pull_requests: false
-before_install:
-  - yarn global add greenkeeper-lockfile@1
-  - export PATH=$PATH:`yarn global bin`
-  - docker build --tag artsdatabanken/tiny-tileserver .
-  - docker image ls	-a
 before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
 branches:

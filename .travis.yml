@@ -2,6 +2,8 @@ sudo: true
 language: node_js
 node_js:
   - "10"
+install:
+  - npm install --build-from-source
 addons:
   apt:
     sources:
@@ -15,6 +17,8 @@ addons:
       - g++-4.9
       - libpixman-1-dev
       - libpixman-1-0
+env:
+  - CXX=g++-4.9
 services:
   - docker
 cache:

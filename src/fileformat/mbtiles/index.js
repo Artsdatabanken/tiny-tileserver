@@ -5,6 +5,7 @@ const { toObject } = require("../../object");
 const fs = require("fs");
 const tilejson = require("./tilejson");
 const mbtilesFormats = require("./mbtilesFormats");
+const render = require("./pbf/pbf_render");
 
 class Index {
   list(cursor, level, fileext, items) {
@@ -19,7 +20,8 @@ class Index {
         case "pbf":
           r.alternateFormats = {
             geojson: f1 + "?geojson",
-            pbfjson: f1 + "?pbfjson"
+            pbfjson: f1 + "?pbfjson",
+            png: f1 + "?png"
           };
           break;
       }
@@ -83,6 +85,11 @@ class Index {
         return {
           contentType: "application/json",
           buffer: toGeoJson(x, y, z, buffer)
+        };
+      case "png":
+        return {
+          contentType: "image/png",
+          buffer: render(decodePbf(buffer))
         };
       default:
         if (!format) throw new Error("Unknown format: " + ext);

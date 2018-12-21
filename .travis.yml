@@ -14,7 +14,7 @@ addons:
       - librsvg2-dev
       - g++-4.9
       - libpixman-1-dev
-      - libpixman-1
+      - libpixman-1-0
 services:
   - docker
 cache:

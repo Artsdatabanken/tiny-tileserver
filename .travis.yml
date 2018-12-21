@@ -1,7 +1,22 @@
 sudo: true
 language: node_js
+install:
+  - npm install --build-from-source
 node_js:
   - "10"
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - libcairo2-dev
+      - libjpeg8-dev
+      - libpango1.0-dev
+      - libgif-dev
+      - librsvg2-dev
+      - g++-4.9
+env:
+  - CXX=g++-4.9
 services:
   - docker
 cache:

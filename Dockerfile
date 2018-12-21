@@ -2,8 +2,8 @@ FROM node:10 as dep
 
 COPY package.json yarn.lock ./
 
-RUN apt add --no-cache --virtual .build-deps python libpixman-1-dev libpixman-1-0 \
-    &&  yarn install --frozen-lockfile --no-cache --production
+RUN apt install python libpixman-1-dev libpixman-1-0
+RUN yarn install --frozen-lockfile --no-cache --production
 
 FROM node:10
 WORKDIR /app

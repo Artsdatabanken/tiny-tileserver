@@ -1,7 +1,7 @@
 const { createCanvas, loadImage } = require("canvas");
 
 const size = 256;
-const scaling = 512 / 4096;
+const scaling = size / 4096;
 
 const colors = [
   "rgba(255,255,217,0.5)",

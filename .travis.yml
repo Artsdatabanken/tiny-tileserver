@@ -13,6 +13,8 @@ addons:
       - libgif-dev
       - librsvg2-dev
       - g++-4.9
+      - libpixman-1-dev
+      - libpixman-1
 services:
   - docker
 cache:

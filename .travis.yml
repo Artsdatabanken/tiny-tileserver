@@ -2,13 +2,16 @@ sudo: true
 language: node_js
 node_js:
   - "10"
+before_install:
+  - yarn global add greenkeeper-lockfile@1
+  - export PATH=$PATH:`yarn global bin`
+  - docker build --tag artsdatabanken/tiny-tileserver .
+  - docker image ls	-a
 services:
   - docker
 cache:
   directories:
     - ~/.npm
-directories:
-  - node_modules
 script:
   - yarn test
 deploy:
@@ -19,18 +22,12 @@ deploy:
     branch: master
 after_success:
   - npm run report-coverage
-  - npm run travis-deploy-once "npm run semantic-release"
 notifications:
   slack:
     secure: JMNUgkCQbY30KWx2f1VJP3PMWtFGBLDk/Mx//ABSI55GMuBM5Eb4ZAuEzwMdO1q7B89oqGSdpWgd/F7IMi07KNYW7qaKzTniZPd9U5UnuL3U/NXoo0mX6iSV4UlZ9fT1yitL5yOQu4P3SNDjxN9OX/ZhSsTlghhNlVWwiHJk5IMcIfqlzhYhv22XrpN305jEyxyXKKM2QqgoWHwGZZBYjvc6mUdRPK7RirVZX2oTWSzFWSkli6PosQOlQPQXZRpIEP11jEa+jIhqriBjyCFVzMO1sHFi/UQosEvHpNCFRAxPc2YxjuwHtla5Vqnzru6l1yo0ZXKvOuAIecoB4iqEFuD51gCzxTlgJHeIdGPS1mtQDwNKFeaoEdziiwLCddc1SS72OI1OsjF95ZNO0LzLHjQsyg243xgLvGfPrYiECrVBsm7dg4DWcwwCDa5YM8gRQBs0xKmuyrMqv3pA89E/AGocZLxMC3Vwv2cjedusNWtqtrE78LCwfiSUzV1ZS6cBJgZypUyNfgim+gtjidXHpOC43msl6uTsJwwC99cryZhDl8V+FeCEMDvNpQDZ/hpeHBh//6Li9XRdQ92qhVPiQyX5ItpookEoYZ8jliQy3oodzzWHX/zguzCb4Hf18v3q/SO11j1u2mMrwPD+zlDm5xT1+1k1oys4gc1DCdTXsvI=
   on_success: change
   on_failure: change
   on_pull_requests: false
-before_install:
-  - yarn global add greenkeeper-lockfile@1
-  - export PATH=$PATH:`yarn global bin`
-  - docker build --tag artsdatabanken/tiny-tileserver .
-  - docker image ls	-a
 before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
 branches:

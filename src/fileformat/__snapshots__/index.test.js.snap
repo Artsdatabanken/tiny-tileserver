@@ -208,6 +208,7 @@ Object {
       "alternateFormats": Object {
         "geojson": "2?geojson",
         "pbfjson": "2?pbfjson",
+        "png": "2?png",
       },
       "filesize": 107,
       "link": "2",

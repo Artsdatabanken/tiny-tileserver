@@ -5,7 +5,9 @@ node_js:
 install:
   - export PKG_CONFIG_PATH="$HOME/lib/pkgconfig/"
   - pkg-config pixman-1 --libs
-  - npm install --build-from-source
+  - export pixman_CFLAGS="-I$HOME/include/pixman-1"
+  - export pixman_LIBS="-L$HOME/lib/ -lpixman-1"
+  - yarn
 addons:
   apt:
     sources:

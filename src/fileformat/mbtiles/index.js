@@ -19,9 +19,11 @@ class Index {
       switch (fileext) {
         case "pbf":
           r.alternateFormats = {
-            geojson: f1 + "?geojson",
-            pbfjson: f1 + "?pbfjson",
-            png: f1 + "?png"
+            geojson: f1 + "?format=geojson",
+            pbfjson: f1 + "?format=pbfjson",
+            png:
+              f1 +
+              "?format=png&border=rgba(128,128,128,0.2)&size=768&font=8px%20Tahoma&fontColor=rgba(0,0,0,0.3)&stroke=rgba(0,0,0,0.4)&antialias=none"
           };
           break;
       }
@@ -69,8 +71,7 @@ class Index {
   }
 
   makeFormat(buffer, query, format, z, x, y) {
-    const ext = Object.keys(query)[0];
-    switch (ext) {
+    switch (query.format) {
       case "pbfjson":
         return {
           contentType: "application/json",
@@ -89,10 +90,10 @@ class Index {
       case "png":
         return {
           contentType: "image/png",
-          buffer: render(decodePbf(buffer))
+          buffer: render(decodePbf(buffer), query)
         };
       default:
-        if (!format) throw new Error("Unknown format: " + ext);
+        if (!format) throw new Error("Unknown format: " + query.format);
         return {
           contentType: format.contentType,
           buffer: buffer

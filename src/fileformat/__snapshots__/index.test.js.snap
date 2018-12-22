@@ -206,9 +206,9 @@ Object {
   "files": Array [
     Object {
       "alternateFormats": Object {
-        "geojson": "2?geojson",
-        "pbfjson": "2?pbfjson",
-        "png": "2?png",
+        "geojson": "2?format=geojson",
+        "pbfjson": "2?format=pbfjson",
+        "png": "2?format=png&border=rgba(128,128,128,0.2)&size=768&font=8px%20Tahoma&fontColor=rgba(0,0,0,0.3)&stroke=rgba(0,0,0,0.4)&antialias=none",
       },
       "filesize": 107,
       "link": "2",

@@ -1,7 +1,6 @@
 const { createCanvas, loadImage } = require("canvas");
 
-const size = 256;
-const scaling = size / 4096;
+// http://localhost:8000/AO.mbtiles/4/8/3?format=png&border=rgba(128,128,128,0.2)&size=768&font=8px%20Tahoma&fontColor=rgba(0,0,0,0.3)&stroke=rgba(0,0,0,0.4)
 
 const colors = [
   "rgba(255,255,217,0.5)",
@@ -14,43 +13,59 @@ const colors = [
   "rgba(37,52,148,0.5)",
   "rgba(8,29,88,0.5)"
 ];
-function border(ctx) {
-  ctx.rect(0.5, 0.5, size - 0.5, size - 0.5);
-  ctx.stroke();
-}
 
-function render(pbfjson) {
+function render(pbfjson, option) {
+  const size = parseInt(option.size) || 512;
+  const scaling = size / 4096; // Coordinates 0-4095 in MVT
+
   const canvas = createCanvas(size, size);
   const ctx = canvas.getContext("2d");
-  ctx.font = "8px Tahoma";
-  ctx.strokeStyle = "rgba(255,255,255,0.3)";
+  ctx.font = option.font; // || "8px Tahoma";
   ctx.lineWidth = 1;
-  ctx.antialias = "none";
+  ctx.antialias = option.antialias || "default";
   let colorIndex = 0;
-  border(ctx);
+  border(ctx, option.border, size);
+  if (option.stroke) ctx.strokeStyle = option.stroke;
   Object.keys(pbfjson.layers).forEach(key => {
     colorIndex = (colorIndex + 1) % colors.length;
     ctx.fillStyle = colors[colorIndex];
     const features = pbfjson.layers[key].features;
-    features.forEach(feature => {
-      colorIndex = (colorIndex + 1) % colors.length;
-      ctx.fillStyle = colors[colorIndex];
-      feature.geom.forEach(geom => drawGeometry(ctx, feature.type, geom));
-    });
-    ctx.fillStyle = "rgba(255,255,255,0.9)";
-    ctx.antialias = "default";
-    features.forEach(feature => {
-      const name = feature.properties.name;
-      if (name)
-        feature.geom.forEach(geom => {
-          drawText(ctx, name, center(geom));
-        });
-    });
+    drawGeometries(ctx, option.stroke, features, scaling, colorIndex);
+    drawLabels(ctx, option.font, option.fontColor, features, scaling);
   });
+
   return canvas.toBuffer();
 }
 
-function center(geom) {
+function drawGeometries(ctx, stroke, features, scaling, colorIndex) {
+  features.forEach(feature => {
+    ctx.fillStyle = colors[colorIndex];
+    feature.geom.forEach(geom =>
+      drawGeometry(ctx, feature.type, stroke, geom, scaling)
+    );
+  });
+}
+
+function drawLabels(ctx, font, fontColor, features, scaling) {
+  if (!font) return;
+  ctx.fillStyle = fontColor;
+  features.forEach(feature => {
+    const name = feature.properties.name;
+    if (name)
+      feature.geom.forEach(geom => {
+        drawText(ctx, name, calcBboxCenter(geom), scaling);
+      });
+  });
+}
+
+function border(ctx, color, size) {
+  if (!color) return;
+  ctx.strokeStyle = color;
+  ctx.rect(0.5, 0.5, size - 0.5, size - 0.5);
+  ctx.stroke();
+}
+
+function calcBboxCenter(geom) {
   let min = { x: 1e9, y: 1e9 };
   let max = { x: 0, y: 0 };
   geom.forEach(co => {
@@ -63,7 +78,7 @@ function center(geom) {
   return { x: 0.5 * (min.x + max.x), y: 0.5 * (min.y + max.y) };
 }
 
-function drawText(ctx, label, position) {
+function drawText(ctx, label, position, scaling) {
   const metrics = ctx.measureText(label);
   const co = {
     x: Math.round(position.x * scaling - 0.5 * metrics.width),
@@ -72,18 +87,19 @@ function drawText(ctx, label, position) {
   ctx.fillText(label, co.x, co.y);
 }
 
-function drawGeometry(ctx, type, geom) {
+function drawGeometry(ctx, type, stroke, geom, scaling) {
   ctx.beginPath();
   geom.forEach(coord => {
     ctx.lineTo(coord.x * scaling, coord.y * scaling);
   });
-  ctx.antialias = "default";
-  ctx.stroke();
+
+  if (stroke) {
+    ctx.stroke();
+  }
 
   // POINT = 1
   // LINESTRING = 2
   // POLYGON = 3
-  ctx.antialias = "none";
   if (type === 3) ctx.fill();
 }
 

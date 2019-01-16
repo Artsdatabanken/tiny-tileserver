@@ -5,7 +5,7 @@ const path = require("path");
 module.exports = function(app, index) {
   app.get("*?", (req, res, next) => {
     index
-      .get(req.path, req.query)
+      .get(decodeURIComponent(req.path), decodeURIComponent(req.query))
       .then(node => {
         if (!node) return next();
         if (node.canBrowse) browse(node, req.path);

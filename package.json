@@ -1,7 +1,7 @@
 {
   "name": "tiny-tileserver",
   "description": "Tiny raster and vector tile server.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "index.js",
   "engines": {
     "node": ">=10.0.0"
@@ -14,8 +14,7 @@
     "husky": "^1.1.2",
     "jest": "^23.6.0",
     "prettier": "^1.14.3",
-    "pretty-quick": "^1.8.0",
-    "semantic-release": "^15.10.6"
+    "pretty-quick": "^1.8.0"
   },
   "scripts": {
     "start": "node tiny-tileserver.js --port 8000 data/",

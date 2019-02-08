@@ -12,6 +12,25 @@ const statFile = path =>
 
 class DirectoryHandler {
   async load(cursor) {
+    if (!cursor.browseFiles)
+      if (await this.loadIndexHtml(cursor)) return cursor;
+
+    return this.browseFiles(cursor);
+  }
+
+  async loadIndexHtml(cursor) {
+    const indexFile = path.join(cursor.physicalDir, "index.html");
+    const stat = await statFile(indexFile);
+    if (stat.error) return false;
+    cursor.stat = stat;
+    cursor.physicalDir = indexFile;
+    cursor.type = "html";
+    cursor.contentType = "text/html";
+    cursor.canBrowse = false;
+    return true;
+  }
+
+  browseFiles(cursor) {
     const files = fs.readdirSync(cursor.physicalDir);
     const entries = files.map(file => {
       const fullPath = path.join(cursor.physicalDir, file);

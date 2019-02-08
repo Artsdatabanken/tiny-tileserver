@@ -8,18 +8,28 @@ class Index {
   }
 
   async get(path, query) {
+    const segments = this.parsePath(path);
+
     const cursor = {
       physicalDir: this.rootDir,
       fileRelPath: "",
-      pathSegments: this.parsePath(path),
+      pathSegments: segments,
       type: "directory",
       query: query
     };
+    let browseFiles = false;
+    if (segments[segments.length - 1] === "") {
+      // Trailing slash => list files rather than show index.html
+      cursor.pathSegments.pop();
+      browseFiles = true;
+    }
+
     while (cursor.pathSegments.length > 0) {
       await fileformat.navigate(cursor);
       if (cursor.final) break;
       if (cursor.notfound) return null;
     }
+    cursor.browseFiles = browseFiles;
     await this.load(cursor);
     return cursor;
   }
@@ -28,7 +38,6 @@ class Index {
     if (!relativePath) return [];
     const parts = relativePath.split("/");
     while (parts.length > 0 && parts[0] == "") parts.shift();
-    if (parts[parts.length - 1] === "") parts.pop();
     return parts;
   }
 

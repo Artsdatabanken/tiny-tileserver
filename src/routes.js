@@ -11,11 +11,8 @@ module.exports = function(app, index) {
         if (node.canBrowse) browse(node, req.path);
         if (!node.contentType) return next();
         res.setHeader("Content-Type", node.contentType);
-        if (!node.buffer) {
-          return res.sendFile(node.physicalDir, {
-            root: __dirname
-          });
-        }
+        if (!node.buffer) return res.sendFile(node.physicalDir);
+
         const compression = getCompression(node.buffer);
         if (compression) res.setHeader("Content-Encoding", compression);
         res.send(node.buffer);

@@ -7,8 +7,8 @@
     "node": ">=10.0.0"
   },
   "devDependencies": {
-    "coveralls": "^3.0.2",
-    "eslint": "^5.13.0",
+    "coveralls": "^3.0.3",
+    "eslint": "^5.14.1",
     "eslint-config-prettier": "^4.0.0",
     "eslint-plugin-prettier": "^3.0.0",
     "husky": "^1.1.2",

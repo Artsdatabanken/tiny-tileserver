@@ -14,7 +14,6 @@ class DirectoryHandler {
   async load(cursor) {
     if (!cursor.browseFiles)
       if (await this.loadIndexHtml(cursor)) return cursor;
-
     return this.browseFiles(cursor);
   }
 

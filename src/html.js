@@ -47,7 +47,7 @@ function browse(node, relativePath) {
         mbtiles
           ? `${mbtiles.format}, zoom ${mbtiles.minzoom} - ${mbtiles.maxzoom}`
           : "",
-        item.canBrowse
+        item.canBrowse || item.type == "directory"
       );
     })
     .join("\n");

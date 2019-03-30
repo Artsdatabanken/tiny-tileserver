@@ -41,7 +41,7 @@ class DirectoryHandler {
         size: stat.size,
         canBrowse: ext && ".sqlite.mbtiles".indexOf(ext) >= 0
       };
-      if (stat.nlink > 0) record.type = "directory";
+      if (stat.isDirectory()) record.type = "directory";
       if (ext === ".mbtiles") {
         record.alternateFormats = {
           tilejson: file + "?tilejson"

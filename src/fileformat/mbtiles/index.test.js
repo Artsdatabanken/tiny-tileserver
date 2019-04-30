@@ -11,7 +11,5 @@ test("get pbf", async () => {
     query: {},
     link: ""
   };
-  const fragment = [];
-  const ext = "";
   await mbtiles.load(cursor).then(value => expect(value).toMatchSnapshot());
 });

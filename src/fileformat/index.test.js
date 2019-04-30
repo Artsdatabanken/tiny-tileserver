@@ -1,5 +1,4 @@
 const format = require("./index");
-const mbTileReader = require("./mbtiles/mbtileReader");
 
 test("typeFromFileExt mbtiles", () => {
   const actual = format.getTypeFromFileExt("mbtiles");

@@ -13,11 +13,13 @@
     "eslint-plugin-prettier": "^3.0.0",
     "husky": "^1.1.2",
     "jest": "^24.5.0",
+    "nodemon": "^1.18.11",
     "prettier": "^1.16.4",
     "pretty-quick": "^1.8.0"
   },
   "scripts": {
     "start": "node tiny-tileserver.js --port 8000 data/",
+    "debug": "nodemon -r esm --inspect-brk --inspect=0.0.0.0:9229 tiny-tileserver.js",
     "commit": "npx git-cz",
     "test": "jest --coverage",
     "report-coverage": "coveralls < coverage/lcov.info"

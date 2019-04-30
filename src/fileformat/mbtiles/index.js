@@ -1,8 +1,6 @@
-const { readTile, readMetadata, listFiles } = require("./mbtileReader");
-const { toGeoJson, getCompression } = require("./pbf/protobuf");
+const { readTile, listFiles } = require("./mbtileReader");
+const { toGeoJson } = require("./pbf/protobuf");
 const { decodePbf } = require("./pbf/pbf_dump");
-const { toObject } = require("../../object");
-const fs = require("fs");
 const tilejson = require("./tilejson");
 const mbtilesFormats = require("./mbtilesFormats");
 const render = require("./pbf/pbf_render");
@@ -13,8 +11,7 @@ class Index {
       const f1 = Object.values(item)[0].toString();
       const r = {
         filesize: item.size,
-        name: f1,
-        link: f1
+        name: f1
       };
       switch (fileext) {
         case "pbf":

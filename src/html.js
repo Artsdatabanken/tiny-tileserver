@@ -9,7 +9,6 @@ function td(inner) {
 function htmlRow(
   name,
   baseUrl,
-  filename,
   size = "",
   modified = "",
   alternateFormats = {},
@@ -40,7 +39,6 @@ function browse(node, relativePath) {
       return htmlRow(
         item.name,
         relativePath,
-        item.link,
         item.size,
         item.modified,
         item.alternateFormats,

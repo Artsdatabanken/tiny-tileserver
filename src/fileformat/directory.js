@@ -1,6 +1,5 @@
 const fs = require("fs");
 var path = require("path");
-const fileformat = require("../fileformat");
 
 const statFile = path =>
   new Promise((res, rej) => {

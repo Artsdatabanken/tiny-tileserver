@@ -1,5 +1,4 @@
 const reader = require("./sqliteReader");
-const { toObject } = require("../../object");
 
 const columnsCache = {};
 

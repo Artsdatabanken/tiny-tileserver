@@ -1,4 +1,3 @@
-const getFormat = require("./tileformat");
 const config = require("../../config");
 const { readMetadata } = require("./mbtileReader");
 

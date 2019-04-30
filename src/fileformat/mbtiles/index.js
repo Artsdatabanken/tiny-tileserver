@@ -26,10 +26,6 @@ class Index {
       }
       return r;
     });
-    if (level == "zoom")
-      files.push({
-        name: "tilejson.json"
-      });
     cursor.canBrowse = true;
     cursor.files = files;
   }

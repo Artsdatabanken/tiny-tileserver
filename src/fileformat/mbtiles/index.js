@@ -13,8 +13,7 @@ class Index {
       const f1 = Object.values(item)[0].toString();
       const r = {
         filesize: item.size,
-        name: f1,
-        link: f1
+        name: f1
       };
       switch (fileext) {
         case "pbf":

@@ -1,6 +1,5 @@
 const { browse } = require("./html");
 const { getCompression } = require("./fileformat/mbtiles/pbf/protobuf");
-const path = require("path");
 
 module.exports = function(app, index) {
   app.get("*?", (req, res, next) => {

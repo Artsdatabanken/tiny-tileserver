@@ -1,4 +1,3 @@
-const log = require("log-less-fancy")();
 const MbTilesHandler = require("./mbtiles/");
 const SqliteHandler = require("./sqlite/");
 const FileHandler = require("./file");

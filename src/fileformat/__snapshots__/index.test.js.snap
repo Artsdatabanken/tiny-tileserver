@@ -157,9 +157,6 @@ Object {
       "filesize": undefined,
       "name": "4",
     },
-    Object {
-      "name": "tilejson.json",
-    },
   ],
   "link": "",
   "pathSegments": Array [],

@@ -139,27 +139,22 @@ Object {
   "files": Array [
     Object {
       "filesize": undefined,
-      "link": "0",
       "name": "0",
     },
     Object {
       "filesize": undefined,
-      "link": "1",
       "name": "1",
     },
     Object {
       "filesize": undefined,
-      "link": "2",
       "name": "2",
     },
     Object {
       "filesize": undefined,
-      "link": "3",
       "name": "3",
     },
     Object {
       "filesize": undefined,
-      "link": "4",
       "name": "4",
     },
     Object {
@@ -183,7 +178,6 @@ Object {
   "files": Array [
     Object {
       "filesize": undefined,
-      "link": "4",
       "name": "4",
     },
   ],
@@ -211,7 +205,6 @@ Object {
         "png": "2?format=png&border=rgba(128,128,128,0.2)&size=768&font=8px%20Tahoma&fontColor=rgba(0,0,0,0.3)&stroke=rgba(0,0,0,0.4)&antialias=none",
       },
       "filesize": 107,
-      "link": "2",
       "name": "2",
     },
   ],

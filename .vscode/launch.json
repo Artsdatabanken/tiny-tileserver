@@ -10,6 +10,13 @@
       "name": "Launch Program",
       "program": "${workspaceFolder}/tiny-tileserver.js",
       "args": ["--port", "8005", "data/"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Unit test",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": ["./**/*.js"]
     }
   ]
 }

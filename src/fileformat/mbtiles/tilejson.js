@@ -1,4 +1,3 @@
-const config = require("../../config");
 const { readMetadata } = require("./mbtileReader");
 
 const template = {
@@ -22,7 +21,7 @@ async function tilejson(cursor) {
   const tj = JSON.parse(JSON.stringify(template));
   tj.minzoom = parseInt(meta.minzoom);
   tj.maxzoom = parseInt(meta.maxzoom);
-  tj.tiles = [config.baseUrl + `${cursor.fileRelPath}/{z}/{x}/{y}`];
+  tj.tiles = [`https://${cursor.hostname}${cursor.fileRelPath}/{z}/{x}/{y}`];
   tj.vector_layers = [
     { id: cursor.name.replace(".mbtiles", ""), description: "-" }
   ];

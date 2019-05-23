@@ -32,8 +32,8 @@ class Index {
 
   async load(cursor) {
     const segments = cursor.pathSegments;
-    if (!cursor.browseFiles && segments.length == 0) return;
     if ("tilejson" in cursor.query) return tilejson(cursor);
+    if (!cursor.browseFiles && segments.length == 0) return;
     const path = cursor.physicalDir;
     const format = await mbtilesFormats.getContentDescription(
       cursor.physicalDir

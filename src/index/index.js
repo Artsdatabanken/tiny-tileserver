@@ -5,12 +5,13 @@ class Index {
     this.rootDir = rootDir;
   }
 
-  async get(path, query) {
+  async get(path, query, hostname) {
     const segments = this.parsePath(path);
 
     const cursor = {
       physicalDir: this.rootDir,
       fileRelPath: "",
+      hostname: hostname,
       pathSegments: segments,
       type: "directory",
       query: query

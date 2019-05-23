@@ -4,7 +4,7 @@ const { getCompression } = require("./fileformat/mbtiles/pbf/protobuf");
 module.exports = function(app, index) {
   app.get("*?", (req, res, next) => {
     index
-      .get(decodeURIComponent(req.path), req.query)
+      .get(decodeURIComponent(req.path), req.query, req.headers.host)
       .then(node => {
         if (!node) return next();
         if (node.canBrowse) browse(node, req.path);

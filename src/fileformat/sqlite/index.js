@@ -15,6 +15,7 @@ async function getColumns(cursor) {
 class SqliteHandler {
   async load(cursor) {
     const segments = cursor.pathSegments;
+    if (!cursor.browseFiles && segments.length == 0) return;
     switch (segments.length) {
       case 0:
         cursor.files = await reader.listTables(cursor.physicalDir);

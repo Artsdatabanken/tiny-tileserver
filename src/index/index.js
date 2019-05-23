@@ -28,7 +28,7 @@ class Index {
       if (cursor.notfound) return null;
     }
     cursor.browseFiles = browseFiles;
-    await this.load(cursor);
+    if (browseFiles) await this.load(cursor);
     return cursor;
   }
 

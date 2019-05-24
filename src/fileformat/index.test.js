@@ -1,4 +1,4 @@
-const format = require("./fileformat");
+const format = require("./index");
 
 test("typeFromFileExt mbtiles", () => {
   const actual = format.getTypeFromFileExt("mbtiles");

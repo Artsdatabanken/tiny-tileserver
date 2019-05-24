@@ -3,7 +3,7 @@ const express = require("express");
 const log = require("log-less-fancy")();
 const minimist = require("minimist");
 const routes = require("./src/routes");
-const Index = require("./src/fileindex");
+const Index = require("./src/index/index");
 const pjson = require("./package.json");
 
 var argv = minimist(process.argv.slice(2), { alias: { p: "port" } });

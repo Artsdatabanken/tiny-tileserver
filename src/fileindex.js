@@ -1,4 +1,4 @@
-const fileformat = require("../fileformat");
+const fileformat = require("./fileformat/");
 
 class Index {
   constructor(rootDir) {

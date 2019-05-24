@@ -132,32 +132,9 @@ Object {
 
 exports[`get z 1`] = `
 Object {
-  "canBrowse": true,
   "content": Object {
     "format": "pbf",
   },
-  "files": Array [
-    Object {
-      "filesize": undefined,
-      "name": "0",
-    },
-    Object {
-      "filesize": undefined,
-      "name": "1",
-    },
-    Object {
-      "filesize": undefined,
-      "name": "2",
-    },
-    Object {
-      "filesize": undefined,
-      "name": "3",
-    },
-    Object {
-      "filesize": undefined,
-      "name": "4",
-    },
-  ],
   "link": "",
   "pathSegments": Array [],
   "physicalDir": "./testdata/pbf.mbtiles",

@@ -14,7 +14,7 @@
     "husky": "^2.0.0",
     "jest": "^24.7.1",
     "nodemon": "^1.18.11",
-    "prettier": "^1.17.0",
+    "prettier": "^1.18.2",
     "pretty-quick": "^1.8.0"
   },
   "scripts": {

@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.3",
-    "eslint": "^5.16.0",
+    "eslint": "^6.0.0",
     "eslint-config-prettier": "^5.0.0",
     "eslint-plugin-prettier": "^3.0.0",
     "husky": "^2.0.0",

@@ -9,7 +9,7 @@
   "devDependencies": {
     "coveralls": "^3.0.3",
     "eslint": "^6.0.0",
-    "eslint-config-prettier": "^5.0.0",
+    "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.0.0",
     "husky": "^2.0.0",
     "jest": "^24.7.1",

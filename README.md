@@ -2,7 +2,6 @@
 
 [![Build Status](https://travis-ci.org/Artsdatabanken/tiny-tileserver.svg?branch=master)](https://travis-ci.org/Artsdatabanken/tiny-tileserver)
 [![Coverage Status](https://coveralls.io/repos/github/Artsdatabanken/tiny-tileserver/badge.svg?branch=master)](https://coveralls.io/github/Artsdatabanken/tiny-tileserver?branch=master)
-[![Greenkeeper badge](https://badges.greenkeeper.io/Artsdatabanken/tiny-tileserver.svg)](https://greenkeeper.io/)
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md#pull-requests)

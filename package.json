@@ -8,12 +8,12 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.6",
-    "eslint": "^6.4.0",
+    "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "husky": "^3.0.5",
+    "husky": "^3.0.8",
     "jest": "^24.9.0",
-    "nodemon": "^1.19.2",
+    "nodemon": "^1.19.3",
     "prettier": "^1.18.2",
     "pretty-quick": "^1.11.1"
   },

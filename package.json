@@ -7,15 +7,15 @@
     "node": ">=10.0.0"
   },
   "devDependencies": {
-    "coveralls": "^3.0.6",
-    "eslint": "^6.5.1",
-    "eslint-config-prettier": "^6.3.0",
+    "coveralls": "^3.0.7",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "husky": "^3.0.8",
+    "husky": "^3.0.9",
     "jest": "^24.9.0",
-    "nodemon": "^1.19.3",
+    "nodemon": "^1.19.4",
     "prettier": "^1.18.2",
-    "pretty-quick": "^1.11.1"
+    "pretty-quick": "^2.0.0"
   },
   "scripts": {
     "start": "node tiny-tileserver.js --port 8000 data/",
@@ -30,7 +30,7 @@
     "express": "^4.17.1",
     "log-less-fancy": "^1.4.0",
     "minimist": "^1.2.0",
-    "pbf": "^3.2.0",
+    "pbf": "^3.2.1",
     "sqlite3": "^4.1.0",
     "zlib": "^1.0.5"
   },

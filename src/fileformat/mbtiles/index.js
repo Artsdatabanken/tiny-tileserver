@@ -53,8 +53,7 @@ class Index {
       case 3:
         const buffer = await readTile(path, ...segments);
         if (!buffer) {
-          cursor.buffer = format.emptyFile;
-          cursor.contentType = format.contentType;
+          cursor.contentType = "empty";
           return;
         }
         const [z, x, y] = segments;

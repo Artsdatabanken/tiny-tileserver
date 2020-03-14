@@ -28,7 +28,7 @@
     "canvas": "^2.6.0",
     "express": "^4.17.1",
     "log-less-fancy": "^1.4.0",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.2",
     "pbf": "^3.2.1",
     "sqlite3": "^4.1.0",
     "zlib": "^1.0.5"

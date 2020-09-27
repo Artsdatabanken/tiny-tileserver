@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceFolder}/tiny-tileserver.js",
-      "args": ["--port", "8005", "data/"]
+      "args": ["--port", "8005", "testdata/"]
     },
     {
       "type": "node",

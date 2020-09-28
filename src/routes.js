@@ -13,7 +13,7 @@ module.exports = function (app, index) {
             // Hack for Leaflet as it reports errors on HTTP 204 response
             node.contentType = "image/png";
             const emptyPng =
-              "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
+              "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
             node.buffer = Buffer.from(emptyPng, "base64");
           } else return res.status(204).send("No Content");
         }

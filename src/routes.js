@@ -9,7 +9,7 @@ module.exports = function (app, index) {
         if (!node) return next();
         if (node.canBrowse) browse(node, req.path);
         if (node.contentType === "empty") {
-          if ("nohttp204" in req.query) {
+          if (req.query.nocontent === "false") {
             // Hack for Leaflet as it reports errors on HTTP 204 response
             node.contentType = "image/png";
             const emptyPng =
